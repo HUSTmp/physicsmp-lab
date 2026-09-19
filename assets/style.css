@@ -328,3 +328,51 @@ footer{border-top:1px solid #19364b;padding:34px 0 44px;color:#9ab0c0}
   }
 }
 
+
+/* ===== Authors ===== */
+.authors{
+  margin-top:32px;
+  padding-top:22px;
+  border-top:1px solid rgba(120,180,210,.18);
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.authors span{
+  color:#63e6be;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.authors strong{
+  color:#edf7ff;
+  font-size:16px;
+  font-weight:700;
+}
+.footer-credit{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:5px;
+}
+.footer-credit p{
+  margin:0;
+  color:#cfe4f0;
+  font-size:15px;
+}
+.footer-credit span{
+  color:#6f8a9b;
+  font-size:11px;
+}
+@media(max-width:680px){
+  .authors{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:6px;
+  }
+  .footer-credit{
+    align-items:flex-start;
+  }
+}
+
