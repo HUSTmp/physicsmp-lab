@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>匀变速直线运动：位移公式的微元法推导</title>
+<style>
+  :root{
+    --bg:#07111f; --panel:#0d1b2a; --panel2:#10243a; --text:#ecf6ff;
+    --muted:#9fb7c9; --grid:#28445d; --axis:#dcecf7; --line:#ff6565;
+    --rect:#4dc7e8; --accent:#63e6be; --warn:#ffd166;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#07111f,#091827);color:var(--text);
+       font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  .wrap{max-width:1280px;margin:auto;padding:18px}
+  h1{font-size:clamp(22px,3vw,36px);margin:4px 0 6px}
+  .sub{color:var(--muted);margin-bottom:16px;line-height:1.65}
+  .grid{display:grid;grid-template-columns:340px 1fr;gap:16px}
+  .card{background:rgba(13,27,42,.94);border:1px solid #1b3a53;border-radius:16px;padding:16px;
+        box-shadow:0 10px 35px rgba(0,0,0,.22)}
+  .controls .row{margin:0 0 17px}
+  label{display:flex;justify-content:space-between;gap:12px;margin-bottom:7px;font-weight:650}
+  input[type=range]{width:100%}
+  select,button{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #33546d;
+                background:#0a1725;color:var(--text);font-size:15px}
+  button{cursor:pointer;font-weight:700}
+  button:hover{filter:brightness(1.12)}
+  .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .stats{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:10px;margin-top:14px}
+  .stat{background:#091827;border:1px solid #18364e;border-radius:12px;padding:10px 12px}
+  .stat .k{color:var(--muted);font-size:12px}
+  .stat .v{font-size:18px;font-weight:760;margin-top:4px}
+  svg{width:100%;height:auto;display:block;background:#081523;border-radius:12px}
+  .current-result{
+    margin-top:14px;
+    background:#081523;
+    border-left:4px solid var(--accent);
+    border-radius:9px;
+    padding:12px 14px;
+    font-size:20px;
+    font-weight:700;
+    line-height:1.6;
+  }
+  .legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-top:8px}
+  .dot{display:inline-block;width:16px;height:16px;border-radius:50%;margin-right:7px;vertical-align:-3px}
+  .note{margin-top:12px;color:var(--muted);font-size:13px;line-height:1.65}
+  @media(max-width:900px){
+    .grid{grid-template-columns:1fr}
+    .stats{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>匀变速直线运动：位移公式的微元法推导</h1>
+  <div class="sub"> <b>体现无限分割，无限逼近的思想。</b></div>
+
+  <div class="grid">
+    <section class="card controls">
+      <div class="row">
+        <label><span>初速度 v₀ / (m·s⁻¹)</span><span id="v0Text"></span></label>
+        <input id="v0" type="range" min="-10" max="30" step="1" value="0">
+      </div>
+      <div class="row">
+        <label><span>加速度 a / (m·s⁻²)</span><span id="aText"></span></label>
+        <input id="a" type="range" min="-6" max="10" step="0.1" value="9.8">
+      </div>
+      <div class="row">
+        <label><span>总时间 t / s</span><span id="tText"></span></label>
+        <input id="t" type="range" min="1" max="15" step="0.5" value="10">
+      </div>
+      <div class="row">
+        <label><span>分割数 n</span><span id="nText"></span></label>
+        <input id="n" type="range" min="1" max="100" step="1" value="5">
+      </div>
+      <div class="row">
+        <label><span>矩形取样方式</span></label>
+        <select id="mode">
+          <option value="left">左端点：v(tᵢ)</option>
+          <option value="right">右端点：v(tᵢ₊₁)</option>
+          <option value="mid">中点：v((tᵢ+tᵢ₊₁)/2)</option>
+        </select>
+      </div>
+      <div class="btns">
+        <button id="minus">n ÷ 2</button>
+        <button id="plus">n × 2</button>
+      </div>
+      <div style="height:10px"></div>
+      <button id="animate">▶ 自动演示 n = 1 → 100</button>
+      <!-- <div class="note">
+        教学建议：先用 <b>n=5</b> 看清“锯齿误差”，再依次比较 n=10、20、50、100。
+        左端点与右端点分别给出下/上近似；对线性 v(t)，中点法会恰好得到精确面积。
+      </div> -->
+    </section>
+
+    <section class="card">
+      <svg id="chart" viewBox="0 0 900 500" aria-label="速度时间图像"></svg>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--line)"></i>真实 v–t 直线</span>
+        <span><i class="dot" style="background:var(--rect)"></i>微元矩形</span>
+        <span><i class="dot" style="background:var(--accent)"></i>当前取样点</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="k">Δt = t/n</div><div class="v" id="dtVal"></div></div>
+        <div class="stat"><div class="k">矩形和 Sₙ</div><div class="v" id="sumVal"></div></div>
+        <div class="stat"><div class="k">精确位移 s</div><div class="v" id="exactVal"></div></div>
+        <div class="stat"><div class="k">绝对误差 |Sₙ-s|</div><div class="v" id="errVal"></div></div>
+        <div class="stat"><div class="k">相对误差</div><div class="v" id="relVal"></div></div>
+      </div>
+
+      <div class="current-result" id="currentResult"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const svg = $("#chart");
+let timer = null;
+
+function fmt(x, d=4){
+  if (!Number.isFinite(x)) return "—";
+  const y = Math.abs(x) < 1e-12 ? 0 : x;
+  return y.toFixed(d).replace(/\.?0+$/,"");
+}
+function el(tag, attrs={}, text=""){
+  const n = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const [k,v] of Object.entries(attrs)) n.setAttribute(k,v);
+  if(text) n.textContent=text;
+  return n;
+}
+function val(){
+  return {
+    v0:+$("#v0").value, a:+$("#a").value, T:+$("#t").value,
+    n:+$("#n").value, mode:$("#mode").value
+  };
+}
+function sampleTime(i,dt,mode){
+  return mode==="left" ? i*dt : mode==="right" ? (i+1)*dt : (i+.5)*dt;
+}
+function update(){
+  const {v0,a,T,n,mode}=val();
+  $("#v0Text").textContent=fmt(v0,1);
+  $("#aText").textContent=fmt(a,1);
+  $("#tText").textContent=fmt(T,1);
+  $("#nText").textContent=n;
+
+  const dt=T/n;
+  let sum=0;
+  for(let i=0;i<n;i++){
+    const ts=sampleTime(i,dt,mode);
+    sum+=(v0+a*ts)*dt;
+  }
+  const exact=v0*T+.5*a*T*T;
+  const err=Math.abs(sum-exact);
+  const rel=Math.abs(exact)>1e-12 ? err/Math.abs(exact)*100 : NaN;
+
+  $("#dtVal").textContent=fmt(dt,4)+" s";
+  $("#sumVal").textContent=fmt(sum,4)+" m";
+  $("#exactVal").textContent=fmt(exact,4)+" m";
+  $("#errVal").textContent=fmt(err,5)+" m";
+  $("#relVal").textContent=Number.isFinite(rel)?fmt(rel,3)+" %":"—";
+
+  draw(v0,a,T,n,mode);
+
+  $("#currentResult").innerHTML=
+    `当前数值：<span style="color:var(--accent)">${fmt(sum,4)} m</span>`+
+    ` → <span style="color:#ffffff">${fmt(exact,4)} m</span>`;
+}
+function draw(v0,a,T,n,mode){
+  svg.innerHTML="";
+  const W=900,H=500,L=80,R=28,TOP=32,B=64;
+  const pw=W-L-R, ph=H-TOP-B;
+  const vend=v0+a*T;
+
+  // 先确定真实速度范围，并强制把 v=0 纳入坐标范围
+  let ymin=Math.min(0,v0,vend);
+  let ymax=Math.max(0,v0,vend);
+  let span=ymax-ymin;
+
+  // 避免 v0=vend=0 时纵轴范围退化为 0
+  if(span<4) span=4;
+
+  // 全程速度非负：纵轴从 0 开始，只在上方留白
+  if(v0>=0 && vend>=0){
+    ymin=0;
+    ymax=Math.max(ymax,4)+0.12*span;
+  }
+  // 全程速度非正：纵轴到 0 为止，只在下方留白
+  else if(v0<=0 && vend<=0){
+    ymax=0;
+    ymin=Math.min(ymin,-4)-0.12*span;
+  }
+  // 速度跨过 0：上下都适当留白
+  else{
+    ymin-=0.12*span;
+    ymax+=0.12*span;
+  }
+
+  const X=t=>L+t/T*pw;
+  const Y=v=>TOP+(ymax-v)/(ymax-ymin)*ph;
+  const y0=Y(0);
+
+  // grid + labels
+  for(let k=0;k<=10;k++){
+    const t=T*k/10, x=X(t);
+    svg.appendChild(el("line",{x1:x,y1:TOP,x2:x,y2:H-B,stroke:"#19364d","stroke-width":1}));
+    svg.appendChild(el("text",{x:x,y:y0+25,fill:"#a8bece","font-size":13,"text-anchor":"middle"},fmt(t,2)));
+  }
+  for(let k=0;k<=6;k++){
+    const v=ymin+(ymax-ymin)*k/6, y=Y(v);
+    svg.appendChild(el("line",{x1:L,y1:y,x2:W-R,y2:y,stroke:"#19364d","stroke-width":1}));
+    svg.appendChild(el("text",{x:L-12,y:y+4,fill:"#a8bece","font-size":13,"text-anchor":"end"},fmt(v,1)));
+  }
+
+  // rectangles
+  const dt=T/n;
+  for(let i=0;i<n;i++){
+    const t0=i*dt, t1=(i+1)*dt, ts=sampleTime(i,dt,mode), vs=v0+a*ts;
+    const x0=X(t0), x1=X(t1), ys=Y(vs);
+    const top=Math.min(ys,y0), height=Math.max(1,Math.abs(y0-ys));
+    svg.appendChild(el("rect",{
+      x:x0, y:top, width:Math.max(0.5,x1-x0), height:height,
+      fill:"#4dc7e8","fill-opacity":.28,stroke:"#4dc7e8","stroke-opacity":.78,"stroke-width":1
+    }));
+    if(n<=30){
+      svg.appendChild(el("circle",{
+        cx:X(ts), cy:Y(vs),
+        r:4,
+        fill:"#63e6be",
+        stroke:"#eafff8",
+        "stroke-width":2
+      }));
+    }
+  }
+
+  // axes
+  svg.appendChild(el("line",{x1:L,y1:y0,x2:W-R,y2:y0,stroke:"#dcecf7","stroke-width":2}));
+  svg.appendChild(el("line",{x1:L,y1:TOP,x2:L,y2:H-B,stroke:"#dcecf7","stroke-width":2}));
+
+  // exact v-t line
+  svg.appendChild(el("line",{x1:X(0),y1:Y(v0),x2:X(T),y2:Y(vend),
+    stroke:"#ff6565","stroke-width":4,"stroke-linecap":"round"}));
+
+  svg.appendChild(el("text",{x:W-R,y:H-18,fill:"#dcecf7","font-size":16,"text-anchor":"end"},"t / s"));
+  svg.appendChild(el("text",{x:L+12,y:TOP+18,fill:"#dcecf7","font-size":16},"v / (m·s⁻¹)"));
+  svg.appendChild(el("text",{x:X(T)-8,y:Y(vend)-12,fill:"#ff9a9a","font-size":14,"text-anchor":"end"},
+                     `v(t) = ${fmt(v0,1)} + ${fmt(a,1)}t`));
+}
+
+["v0","a","t","n","mode"].forEach(id=>$("#"+id).addEventListener("input",update));
+$("#plus").onclick=()=>{ $("#n").value=Math.min(100,Math.max(1,+$("#n").value*2)); update(); };
+$("#minus").onclick=()=>{ $("#n").value=Math.max(1,Math.round(+$("#n").value/2)); update(); };
+$("#animate").onclick=()=>{
+  if(timer){ clearInterval(timer); timer=null; $("#animate").textContent="▶ 自动演示 n = 1 → 100"; return; }
+  $("#n").value=1; update();
+  $("#animate").textContent="■ 停止演示";
+  timer=setInterval(()=>{
+    let n=+$("#n").value;
+    if(n>=100){
+      clearInterval(timer); timer=null; $("#animate").textContent="▶ 自动演示 n = 1 → 100"; return;
+    }
+    // 前期慢一些，后期加速，便于看清逼近
+    n = n<12 ? n+1 : n<40 ? n+2 : n+5;
+    $("#n").value=Math.min(100,n); update();
+  },180);
+};
+update();
+</script>
+</body>
+</html>
