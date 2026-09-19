@@ -26,60 +26,116 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <span class="eyebrow">Interactive Physics · 交互式物理学习</span>
-          <h1>把抽象的物理规律<br><span>变成可以“动手看见”的实验</span></h1>
-          <p class="hero-copy">
-            PhysicsMP Lab 是一个面向中学物理学习与教学的交互式仿真实验平台。通过动态仿真、图像、参数控制和数值变化，让抽象的物理规律变得可观察、可操作、可验证。
+    <section class="hero hero-v2">
+      <div class="container hero-grid hero-grid-v2">
+        <div class="hero-copy-block">
+          <span class="eyebrow">PhysicsMP Lab · Interactive Physics</span>
+          <h1 class="hero-title-v2">
+            看见物理，<br>
+            <span>理解规律。</span>
+          </h1>
+          <p class="hero-lead">
+            把抽象的物理规律变成可以观察、操作和验证的动态实验。
+            从运动、图像到公式，让学生不只“记住结论”，而是真正看见物理过程。
           </p>
+
           <div class="hero-actions">
             <a class="btn primary" href="#categories">按知识模块学习</a>
             <a class="btn secondary" href="#experiments">查看精选实验</a>
           </div>
 
-          <div class="hero-stats">
+          <div class="hero-stats hero-stats-v2">
             <div><b>02</b><span>已上线实验</span></div>
             <div><b>04</b><span>知识模块</span></div>
             <div><b>100%</b><span>浏览器直接运行</span></div>
           </div>
         </div>
 
-        <div class="hero-visual">
-          <div class="graph-card">
-            <div class="graph-top">
-              <span>v / (m·s⁻¹)</span>
-              <span class="live-dot">LIVE</span>
+        <div class="hero-showcase" aria-label="物理可视化主视觉">
+          <div class="cosmos-halo" aria-hidden="true">
+            <div class="accretion-disk disk-back"></div>
+            <div class="blackhole-shadow"></div>
+            <div class="accretion-disk disk-front"></div>
+            <div class="lens-glow"></div>
+          </div>
+
+          <div class="physics-panel-v2">
+            <div class="panel-toolbar">
+              <div>
+                <span class="panel-kicker">MECHANICS · KINEMATICS</span>
+                <strong>速度—时间图像与微元逼近</strong>
+              </div>
+              <span class="sim-badge"><i></i> LIVE SIMULATION</span>
             </div>
-            <svg viewBox="0 0 520 310" aria-label="示意速度时间图像">
-              <g class="grid-lines">
-                <line x1="55" y1="30" x2="55" y2="260"/>
-                <line x1="55" y1="260" x2="485" y2="260"/>
-                <line x1="55" y1="205" x2="485" y2="205"/>
-                <line x1="55" y1="150" x2="485" y2="150"/>
-                <line x1="55" y1="95" x2="485" y2="95"/>
+
+            <svg class="hero-physics-svg" viewBox="0 0 620 360" role="img" aria-label="标准速度时间图像与矩形面积逼近示意">
+              <defs>
+                <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#55d7f0" stop-opacity=".28"/>
+                  <stop offset="100%" stop-color="#55d7f0" stop-opacity=".08"/>
+                </linearGradient>
+              </defs>
+
+              <g class="hero-grid-lines">
+                <line x1="82" y1="72"  x2="560" y2="72"/>
+                <line x1="82" y1="122" x2="560" y2="122"/>
+                <line x1="82" y1="172" x2="560" y2="172"/>
+                <line x1="82" y1="222" x2="560" y2="222"/>
               </g>
-              <g class="rects">
-                <rect x="55"  y="220" width="86" height="40"/>
-                <rect x="141" y="183" width="86" height="77"/>
-                <rect x="227" y="146" width="86" height="114"/>
-                <rect x="313" y="109" width="86" height="151"/>
-                <rect x="399" y="72"  width="86" height="188"/>
+
+              <g class="hero-rects">
+                <rect x="82"  y="238" width="95" height="34"/>
+                <rect x="177" y="205" width="95" height="67"/>
+                <rect x="272" y="172" width="95" height="100"/>
+                <rect x="367" y="139" width="95" height="133"/>
+                <rect x="462" y="106" width="95" height="166"/>
               </g>
-              <line class="motion-line" x1="55" y1="240" x2="485" y2="55"/>
-              <circle class="sample-point" cx="55" cy="240" r="6"/>
-              <circle class="sample-point" cx="141" cy="203" r="6"/>
-              <circle class="sample-point" cx="227" cy="166" r="6"/>
-              <circle class="sample-point" cx="313" cy="129" r="6"/>
-              <circle class="sample-point" cx="399" cy="92" r="6"/>
+
+              <g class="hero-axes">
+                <line x1="82" y1="272" x2="570" y2="272"/>
+                <line x1="82" y1="272" x2="82" y2="48"/>
+              </g>
+
+              <g class="hero-ticks">
+                <line x1="177" y1="272" x2="177" y2="278"/>
+                <line x1="272" y1="272" x2="272" y2="278"/>
+                <line x1="367" y1="272" x2="367" y2="278"/>
+                <line x1="462" y1="272" x2="462" y2="278"/>
+                <line x1="557" y1="272" x2="557" y2="278"/>
+              </g>
+
+              <line class="hero-vt-line" x1="82" y1="248" x2="557" y2="82"/>
+
+              <g class="hero-samples">
+                <circle cx="82"  cy="248" r="7"/>
+                <circle cx="177" cy="215" r="7"/>
+                <circle cx="272" cy="182" r="7"/>
+                <circle cx="367" cy="149" r="7"/>
+                <circle cx="462" cy="116" r="7"/>
+              </g>
+
+              <text class="hero-axis-label" x="574" y="291">t / s</text>
+              <text class="hero-axis-label" x="28" y="54">v / (m·s⁻¹)</text>
+
+              <text class="hero-note" x="364" y="63">v(t) = v₀ + at</text>
             </svg>
-            <div class="formula-strip">
+
+            <div class="hero-formulas">
               <span>Δt = t / n</span>
-              <span>Sₙ = ΣvΔt</span>
-              <span>s = v₀t + ½at²</span>
+              <span>Sₙ = Σ vΔt</span>
+              <span>n → ∞</span>
+              <span>s = ∫vdt</span>
+            </div>
+
+            <div class="hero-panel-caption">
+              <span>交互参数</span>
+              <b>拖动 · 观察 · 比较 · 验证</b>
             </div>
           </div>
+
+          <div class="science-tag science-tag-a">MECHANICS</div>
+          <div class="science-tag science-tag-b">INTERACTIVE</div>
+          <div class="science-tag science-tag-c">SIMULATION</div>
         </div>
       </div>
     </section>
