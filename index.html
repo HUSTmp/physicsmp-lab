@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PhysicsMP Lab：面向中学物理课堂的交互式仿真小实验。">
+  <title>PhysicsMP Lab · 物理仿真小实验</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">P</span>
+        <span>
+          <strong>PhysicsMP Lab</strong>
+          <small>物理仿真小实验</small>
+        </span>
+      </a>
+      <nav class="nav-links">
+        <a href="#experiments">实验</a>
+        <a href="#categories">分类</a>
+        <a href="#about">关于</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Interactive Physics · 交互式物理学习</span>
+          <h1>把抽象的物理规律<br><span>变成可以“动手看见”的实验</span></h1>
+          <p class="hero-copy">
+            PhysicsMP Lab 是一个面向学生和教师的物理仿真小实验网站。
+            通过调节参数、观察图像和比较数值，让公式背后的物理过程真正可视化。
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#experiments">开始实验</a>
+            <a class="btn secondary" href="#about">了解项目</a>
+          </div>
+
+          <div class="hero-stats">
+            <div><b>01</b><span>已上线实验</span></div>
+            <div><b>04</b><span>规划模块</span></div>
+            <div><b>100%</b><span>浏览器直接运行</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="graph-card">
+            <div class="graph-top">
+              <span>v / (m·s⁻¹)</span>
+              <span class="live-dot">LIVE</span>
+            </div>
+            <svg viewBox="0 0 520 310" aria-label="示意速度时间图像">
+              <g class="grid-lines">
+                <line x1="55" y1="30" x2="55" y2="260"/>
+                <line x1="55" y1="260" x2="485" y2="260"/>
+                <line x1="55" y1="205" x2="485" y2="205"/>
+                <line x1="55" y1="150" x2="485" y2="150"/>
+                <line x1="55" y1="95" x2="485" y2="95"/>
+              </g>
+              <g class="rects">
+                <rect x="55"  y="220" width="86" height="40"/>
+                <rect x="141" y="183" width="86" height="77"/>
+                <rect x="227" y="146" width="86" height="114"/>
+                <rect x="313" y="109" width="86" height="151"/>
+                <rect x="399" y="72"  width="86" height="188"/>
+              </g>
+              <line class="motion-line" x1="55" y1="240" x2="485" y2="55"/>
+              <circle class="sample-point" cx="55" cy="240" r="6"/>
+              <circle class="sample-point" cx="141" cy="203" r="6"/>
+              <circle class="sample-point" cx="227" cy="166" r="6"/>
+              <circle class="sample-point" cx="313" cy="129" r="6"/>
+              <circle class="sample-point" cx="399" cy="92" r="6"/>
+            </svg>
+            <div class="formula-strip">
+              <span>Δt = t / n</span>
+              <span>Sₙ = ΣvΔt</span>
+              <span>s = v₀t + ½at²</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experiments" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Experiments</span>
+            <h2>仿真实验</h2>
+          </div>
+          <p>每个实验都可以直接调参数、看图像、比较数值。</p>
+        </div>
+
+        <div class="experiment-grid">
+          <article class="experiment-card featured">
+            <div class="card-badge">已上线</div>
+            <div class="experiment-icon">Σ</div>
+            <div class="experiment-content">
+              <span class="category">运动学 · 微元法</span>
+              <h3>匀变速直线运动：位移公式推导</h3>
+              <p>
+                通过把 v–t 图像下的面积划分成多个小矩形，观察分割数 n 增大时，
+                矩形面积和如何不断逼近真实位移。
+              </p>
+              <div class="tags">
+                <span>v–t 图像</span>
+                <span>微元法</span>
+                <span>极限思想</span>
+              </div>
+              <a class="btn primary card-button" href="programs/microelement.html">进入实验 →</a>
+            </div>
+          </article>
+
+          <article class="experiment-card coming">
+            <div class="card-badge muted">规划中</div>
+            <div class="experiment-icon">↓</div>
+            <div class="experiment-content">
+              <span class="category">运动学</span>
+              <h3>自由落体运动</h3>
+              <p>调节初始高度和初速度，观察速度、位移和时间之间的关系。</p>
+            </div>
+          </article>
+
+          <article class="experiment-card coming">
+            <div class="card-badge muted">规划中</div>
+            <div class="experiment-icon">↗</div>
+            <div class="experiment-content">
+              <span class="category">曲线运动</span>
+              <h3>平抛与斜抛运动</h3>
+              <p>同时观察 x、y 两个方向的独立运动以及合成轨迹。</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="categories" class="section section-alt">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Categories</span>
+            <h2>知识模块</h2>
+          </div>
+          <p>网站可以逐步扩展成一套完整的交互式物理资源库。</p>
+        </div>
+
+        <div class="category-grid">
+          <div class="category-card">
+            <span class="num">01</span>
+            <h3>力学</h3>
+            <p>运动学、牛顿运动定律、曲线运动、机械能、动量。</p>
+          </div>
+          <div class="category-card">
+            <span class="num">02</span>
+            <h3>电磁学</h3>
+            <p>电场、磁场、带电粒子运动、电磁感应、电路。</p>
+          </div>
+          <div class="category-card">
+            <span class="num">03</span>
+            <h3>振动与波</h3>
+            <p>简谐运动、机械波、叠加、干涉、驻波。</p>
+          </div>
+          <div class="category-card">
+            <span class="num">04</span>
+            <h3>光学与近代物理</h3>
+            <p>几何光学、干涉衍射、光电效应与基础近代物理。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container about">
+        <div>
+          <span class="eyebrow">About</span>
+          <h2>为什么做这个网站？</h2>
+        </div>
+        <div class="about-copy">
+          <p>
+            很多物理公式并不难记，真正困难的是“看见公式是怎样从物理过程中长出来的”。
+            这个网站希望把图像、参数、运动和数学表达式放在同一个交互环境里。
+          </p>
+          <p>
+            学生可以自己拖动参数验证规律；教师也可以直接在课堂投影演示。
+            每个实验尽量保持轻量、清晰，并可以在普通浏览器中直接运行。
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <strong>PhysicsMP Lab</strong>
+        <span>物理仿真小实验</span>
+      </div>
+      <p>让物理过程可视化，让公式更容易理解。</p>
+    </div>
+  </footer>
+</body>
+</html>
