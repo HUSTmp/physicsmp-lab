@@ -149,7 +149,7 @@ footer{border-top:1px solid #19364b;padding:34px 0 44px;color:#9ab0c0}
 
 
 /* 模块化导航 */
-.featured-grid{grid-template-columns:1fr 1fr}
+.featured-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .category-link{display:block;transition:transform .2s ease,border-color .2s ease,background .2s ease}
 .category-link:hover{
   transform:translateY(-4px);
