@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>频闪下的自由落体：为什么水滴看起来静止？</title>
+<style>
+  :root{
+    --bg:#0f172a;
+    --panel:#111827;
+    --panel2:#172033;
+    --text:#e5e7eb;
+    --muted:#9ca3af;
+    --accent:#38bdf8;
+    --line:#64748b;
+    --flash:#f8fafc;
+    --good:#86efac;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: "Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    background:linear-gradient(135deg,#07111f,#111827 55%,#0b1220);
+    color:var(--text);
+  }
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:22px;
+  }
+  h1{font-size:24px;margin:0 0 6px}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:16px}
+  .grid{
+    display:grid;
+    grid-template-columns:minmax(430px,1.15fr) minmax(320px,.85fr);
+    gap:16px;
+  }
+  .card{
+    background:rgba(17,24,39,.94);
+    border:1px solid #263247;
+    border-radius:16px;
+    box-shadow:0 12px 30px rgba(0,0,0,.25);
+    overflow:hidden;
+  }
+  .canvasWrap{
+    position:relative;
+    height:650px;
+    background:
+      radial-gradient(circle at 50% 15%,rgba(56,189,248,.08),transparent 35%),
+      #07101d;
+  }
+  canvas{display:block;width:100%;height:100%}
+  .flashOverlay{
+    pointer-events:none;
+    position:absolute;inset:0;
+    background:white;
+    opacity:0;
+    mix-blend-mode:screen;
+  }
+  .side{padding:18px}
+  .controls{
+    display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;
+  }
+  button{
+    border:1px solid #334155;
+    background:#1e293b;color:#f8fafc;
+    border-radius:10px;padding:9px 13px;
+    cursor:pointer;font-size:14px;
+  }
+  button.active{border-color:#38bdf8;background:#0c4a6e}
+  button:hover{filter:brightness(1.08)}
+  .sliderRow{margin:14px 0}
+  .sliderRow label{display:flex;justify-content:space-between;color:#cbd5e1;font-size:14px}
+  input[type=range]{width:100%}
+  .formula{
+    margin-top:16px;
+    padding:14px 15px;
+    background:#0b1220;
+    border:1px solid #263247;
+    border-radius:12px;
+    line-height:1.8;
+  }
+  .formula b{color:#7dd3fc}
+  .formula .answer{color:var(--good);font-weight:700}
+  .mini{
+    margin-top:14px;
+    font-size:14px;color:#cbd5e1;line-height:1.75;
+  }
+  .legend{
+    display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:#cbd5e1;margin-top:10px
+  }
+  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+
+  .snapshot{
+    margin-top:14px;
+    padding:12px 14px;
+    background:#0b1220;
+    border:1px solid #263247;
+    border-radius:12px;
+    line-height:1.7;
+    color:#cbd5e1;
+    font-size:14px;
+  }
+  .snapshot b{color:var(--good)}
+  .snapshot .slots{
+    margin-top:6px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .snapshot .slot{
+    padding:5px 9px;
+    border-radius:999px;
+    border:1px solid #334155;
+    background:#111827;
+    color:#e5e7eb;
+  }
+
+  .note{
+    margin-top:14px;padding:12px;border-left:3px solid #38bdf8;background:#0b1220;
+    color:#cbd5e1;line-height:1.7;font-size:14px;
+  }
+  @media (max-width:850px){
+    .grid{grid-template-columns:1fr}
+    .canvasWrap{height:590px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>频闪下的自由落体：为什么水滴看起来静止？</h1>
+  <div class="sub">设 A→B = 10 cm，取 g = 10 m/s²，因此频闪周期 Δt = √(2×0.10/10) = √0.02 s ≈ 0.141 s。</div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="canvasWrap">
+        <canvas id="cv"></canvas>
+        <div class="flashOverlay" id="flash"></div>
+      </div>
+    </div>
+
+    <div class="card side">
+      <div class="controls">
+        <button id="playBtn">⏸ 暂停</button>
+        <button id="continuousBtn" class="active">连续光</button>
+        <button id="strobeBtn">频闪光</button>
+        <button id="idBtn">显示水滴编号：关</button>
+        <button id="resetBtn">重置</button>
+      </div>
+
+      <div class="sliderRow">
+        <label><span>动画速度</span><span id="speedText">0.25×</span></label>
+        <input id="speed" type="range" min="0.10" max="1.00" step="0.05" value="0.25">
+      </div>
+
+      <div class="formula">
+        <div><b>位置规律：</b> y = ½gt²</div>
+        <div>令相邻闪光时间间隔为 Δt，且 A→B = 10 cm：</div>
+        <div>½g(Δt)² = 10 cm</div>
+        <div>所以第 n 个时间间隔后：y<sub>n</sub> = 10n² cm</div>
+        <hr style="border:none;border-top:1px solid #263247;margin:10px 0">
+        <div>A：0 cm</div>
+        <div>B：10 cm</div>
+        <div>C：40 cm</div>
+        <div>D：90 cm</div>
+        <div class="answer">相邻位移 AB:BC:CD = 10:30:50 = 1:3:5</div>
+        <div class="answer">速度 vB:vC:vD = 1:2:3</div>
+      </div>
+
+
+      <div class="snapshot" id="snapshotInfo">
+        <b>频闪观察：</b>切换到“频闪光”后，这里会显示每次闪光时 A、B、C、D 位置分别是哪一滴水。
+        <div class="slots" id="snapshotSlots"></div>
+      </div>
+
+      <div class="note">
+        关键现象：每隔一个 Δt，水龙头恰好又产生一滴新水滴。<br>
+        在每次闪光瞬间，虽然“具体是哪一滴水”已经换了，但 A、B、C、D 四个位置上总各有一滴，所以人眼会觉得这些水滴固定不动。
+      </div>
+
+      <div class="mini">
+        建议先看“连续光”，再切到“频闪光”。最后打开“显示水滴编号”，你会看到：
+        <b>位置没变，但每次闪光时占据该位置的水滴编号在变化。</b>
+      </div>
+
+      <div class="legend" id="legend"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('cv');
+const ctx = canvas.getContext('2d');
+const flash = document.getElementById('flash');
+
+const playBtn = document.getElementById('playBtn');
+const continuousBtn = document.getElementById('continuousBtn');
+const strobeBtn = document.getElementById('strobeBtn');
+const idBtn = document.getElementById('idBtn');
+const resetBtn = document.getElementById('resetBtn');
+const speed = document.getElementById('speed');
+const speedText = document.getElementById('speedText');
+const legend = document.getElementById('legend');
+const snapshotInfo = document.getElementById('snapshotInfo');
+let snapshotSlots = document.getElementById('snapshotSlots');
+
+const g = 1000;                  // cm/s²
+const T = Math.sqrt(2*10/g);         // 由 1/2*g*T² = 10 cm 得 T = sqrt(0.02) s
+const maxY = 105;       // cm
+let simTime = 0;
+let playing = true;
+let mode = 'continuous';
+let showIds = false;
+let lastReal = performance.now();
+let lastFlashIndex = -1;
+let flashAlpha = 0;
+
+const idColors = ['#38bdf8','#f472b6','#a78bfa','#f59e0b','#34d399','#fb7185','#60a5fa','#facc15'];
+
+function resize(){
+  const r = canvas.getBoundingClientRect();
+  const dpr = Math.max(1, window.devicePixelRatio || 1);
+  canvas.width = Math.round(r.width*dpr);
+  canvas.height = Math.round(r.height*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+function geom(){
+  const W = canvas.clientWidth, H = canvas.clientHeight;
+  return {
+    W,H,
+    x: W*0.46,
+    yA: 105,
+    yBottom: H-70,
+    scale: (H-190)/90
+  };
+}
+
+function yPix(cm){
+  const q = geom();
+  return q.yA + cm*q.scale;
+}
+
+function drawDrop(x,y,r,color,label,alpha=1){
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(x, y-r*1.25);
+  ctx.bezierCurveTo(x-r*.65,y-r*.25,x-r*.95,y+r*.45,x,y+r);
+  ctx.bezierCurveTo(x+r*.95,y+r*.45,x+r*.65,y-r*.25,x,y-r*1.25);
+  ctx.fill();
+  ctx.restore();
+
+  if(showIds && label !== undefined){
+    ctx.save();
+    ctx.font = '12px Microsoft YaHei';
+    ctx.fillStyle = '#f8fafc';
+    ctx.textAlign='left';
+    ctx.fillText('#'+label, x+13, y+4);
+    ctx.restore();
+  }
+}
+
+function drawScene(displayTime, dropsVisible=true){
+  const {W,H,x,yA,scale} = geom();
+  ctx.clearRect(0,0,W,H);
+
+  // dark background
+  ctx.fillStyle='#07101d';
+  ctx.fillRect(0,0,W,H);
+
+  // cylinder / measuring tube
+  ctx.strokeStyle='#334155';
+  ctx.lineWidth=2;
+  ctx.strokeRect(x-70, yA-20, 140, Math.min(H-yA-30, 90*scale+35));
+
+  // faucet
+  ctx.fillStyle='#94a3b8';
+  ctx.fillRect(x-48,34,96,14);
+  ctx.fillRect(x+20,16,22,20);
+  ctx.fillRect(x+10,13,42,7);
+  ctx.fillRect(x-6,47,12,38);
+
+  // A-D markers
+  const marks = [
+    ['A',0],['B',10],['C',40],['D',90]
+  ];
+  ctx.font='15px Microsoft YaHei';
+  for(const [name,cm] of marks){
+    const yy = yPix(cm);
+    ctx.strokeStyle = cm===0 ? '#38bdf8' : '#64748b';
+    ctx.lineWidth=1.2;
+    ctx.beginPath();
+    ctx.moveTo(x-100,yy);
+    ctx.lineTo(x+100,yy);
+    ctx.stroke();
+
+    ctx.fillStyle='#e5e7eb';
+    ctx.textAlign='right';
+    ctx.fillText(name, x-82, yy-7);
+    ctx.textAlign='left';
+    ctx.fillStyle='#94a3b8';
+    ctx.fillText(cm===0 ? '0 cm' : `-${cm} cm`, x+84, yy+5);
+  }
+
+  // ruler ticks every 10cm
+  ctx.strokeStyle='#475569';
+  for(let cm=0;cm<=90;cm+=10){
+    const yy=yPix(cm);
+    ctx.beginPath();
+    ctx.moveTo(x+62,yy);
+    ctx.lineTo(x+72,yy);
+    ctx.stroke();
+  }
+
+  // drops: births every T
+  // 连续光下始终可见；频闪模式下只在“闪光窗口”内可见
+  if(dropsVisible){
+    const latestBirth = Math.floor(displayTime/T + 1e-9);
+    const minBirth = Math.max(0, latestBirth-20);
+
+    for(let k=minBirth;k<=latestBirth;k++){
+      const birth = k*T;
+      const age = displayTime - birth;
+      if(age < -1e-8) continue;
+      const ycm = 0.5*g*age*age;
+      if(ycm > maxY) continue;
+      const yy = yPix(ycm);
+      let color = showIds ? idColors[k%idColors.length] : '#38bdf8';
+      drawDrop(x, yy, 8.5, color, k+1, 1);
+    }
+  }
+
+  // current time and mode
+  ctx.fillStyle='#cbd5e1';
+  ctx.textAlign='left';
+  ctx.font='14px Microsoft YaHei';
+  ctx.fillText(`模拟时间 t = ${displayTime.toFixed(3)} s`, 20, H-32);
+  ctx.fillText(mode==='continuous' ? '连续光：看到水滴连续下落' : '频闪光：只在每个 Δt 瞬间“看见”水滴', 20, H-12);
+}
+
+function triggerFlash(){
+  flashAlpha=0.42;
+}
+
+function updateLegend(){
+  if(!showIds){
+    legend.innerHTML = '<span><span class="dot" style="background:#38bdf8"></span>所有水滴同色</span>';
+  }else{
+    legend.innerHTML = '<span>不同颜色/编号代表不同的真实水滴；用来揭示“看似静止，其实水滴在不断替换”。</span>';
+  }
+}
+updateLegend();
+
+function updateSnapshot(idx){
+  if(mode !== 'strobe'){
+    snapshotInfo.firstChild.textContent = '';
+    snapshotInfo.innerHTML =
+      '<b>连续光：</b>此时能看到每一滴水真实地向下运动。切换到“频闪光”观察表观静止。' +
+      '<div class="slots" id="snapshotSlots"></div>';
+    snapshotSlots = document.getElementById('snapshotSlots');
+    return;
+  }
+
+  const pos = [
+    ['A', idx],
+    ['B', idx-1],
+    ['C', idx-2],
+    ['D', idx-3]
+  ];
+
+  snapshotInfo.innerHTML =
+    '<b>第 ' + (idx+1) + ' 次闪光：</b>位置几乎不变，但占据这些位置的水滴编号在更新。' +
+    '<div class="slots" id="snapshotSlots"></div>';
+  snapshotSlots = document.getElementById('snapshotSlots');
+
+  for(const [name,birthIndex] of pos){
+    const span = document.createElement('span');
+    span.className = 'slot';
+    span.textContent = birthIndex >= 0 ? `${name}：#${birthIndex+1}` : `${name}：—`;
+    snapshotSlots.appendChild(span);
+  }
+}
+
+function loop(now){
+  const dtReal = Math.min(0.05,(now-lastReal)/1000);
+  lastReal = now;
+
+  if(playing){
+    simTime += dtReal * parseFloat(speed.value);
+  }
+
+  if(mode==='continuous'){
+    drawScene(simTime, true);
+    flash.style.opacity = 0;
+  }else{
+    // 真正的频闪观察：
+    // 只有每个 nT 附近的一小段时间能“看见”水滴，其余时间处于黑暗中。
+    const idx = Math.floor(simTime/T + 1e-9);
+    const snapTime = idx*T;
+    const phase = simTime - snapTime;
+    const flashWindow = 0.020; // 模拟时间中的可见窗口，约为 T 的 14%
+
+    if(idx!==lastFlashIndex){
+      lastFlashIndex=idx;
+      triggerFlash();
+      updateSnapshot(idx);
+    }
+
+    const visible = phase <= flashWindow;
+    drawScene(snapTime, visible);
+
+    if(visible){
+      flashAlpha *= 0.78;
+      flash.style.opacity = Math.max(0.08,flashAlpha).toFixed(3);
+    }else{
+      flash.style.opacity = 0;
+    }
+  }
+
+  requestAnimationFrame(loop);
+}
+
+// 只在程序启动时初始化一次说明，不要在每一帧重置
+updateSnapshot(0);
+requestAnimationFrame(loop);
+
+playBtn.onclick=()=>{
+  playing=!playing;
+  playBtn.textContent=playing?'⏸ 暂停':'▶ 继续';
+};
+
+continuousBtn.onclick=()=>{
+  mode='continuous';
+  continuousBtn.classList.add('active');
+  strobeBtn.classList.remove('active');
+  updateSnapshot(0);
+};
+
+strobeBtn.onclick=()=>{
+  mode='strobe';
+  strobeBtn.classList.add('active');
+  continuousBtn.classList.remove('active');
+  lastFlashIndex=-1;
+  updateSnapshot(Math.floor(simTime/T + 1e-9));
+};
+
+idBtn.onclick=()=>{
+  showIds=!showIds;
+  idBtn.textContent=`显示水滴编号：${showIds?'开':'关'}`;
+  idBtn.classList.toggle('active',showIds);
+  updateLegend();
+};
+
+resetBtn.onclick=()=>{
+  simTime=0;
+  lastFlashIndex=-1;
+};
+
+speed.oninput=()=>{
+  speedText.textContent=parseFloat(speed.value).toFixed(2)+'×';
+};
+</script>
+</body>
+</html>
