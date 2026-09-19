@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="PhysicsMP Lab：面向中学物理课堂的交互式仿真小实验。">
   <title>PhysicsMP Lab · 物理仿真小实验</title>
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?v=20260919-3">
 </head>
 <body>
   <header class="site-header">
@@ -26,17 +26,14 @@
   </header>
 
   <main>
-    <section class="hero hero-v2">
-      <div class="container hero-grid hero-grid-v2">
+    <section class="hero hero-v3">
+      <div class="container hero-grid hero-grid-v3">
         <div class="hero-copy-block">
           <span class="eyebrow">PhysicsMP Lab · Interactive Physics</span>
-          <h1 class="hero-title-v2">
-            看见物理，<br>
-            <span>理解规律。</span>
-          </h1>
-          <p class="hero-lead">
+          <h1 class="hero-title-v3">看见物理，<br><span>理解规律。</span></h1>
+          <p class="hero-lead-v3">
             把抽象的物理规律变成可以观察、操作和验证的动态实验。
-            从运动、图像到公式，让学生不只“记住结论”，而是真正看见物理过程。
+            从运动与图像，到波动、场与更广阔的物理世界，让学习从“记住结论”走向“看懂过程”。
           </p>
 
           <div class="hero-actions">
@@ -44,98 +41,123 @@
             <a class="btn secondary" href="#experiments">查看精选实验</a>
           </div>
 
-          <div class="hero-stats hero-stats-v2">
+          <div class="hero-stats hero-stats-v3">
             <div><b>02</b><span>已上线实验</span></div>
             <div><b>04</b><span>知识模块</span></div>
             <div><b>100%</b><span>浏览器直接运行</span></div>
           </div>
         </div>
 
-        <div class="hero-showcase" aria-label="物理可视化主视觉">
-          <div class="cosmos-halo" aria-hidden="true">
-            <div class="accretion-disk disk-back"></div>
-            <div class="blackhole-shadow"></div>
-            <div class="accretion-disk disk-front"></div>
-            <div class="lens-glow"></div>
+        <div class="hero-universe" aria-label="PhysicsMP Lab 物理主视觉">
+          <div class="universe-head">
+            <div>
+              <span>PHYSICS VISUAL LAB</span>
+              <strong>从运动到宇宙</strong>
+            </div>
+            <span class="universe-status"><i></i> INTERACTIVE</span>
           </div>
 
-          <div class="physics-panel-v2">
-            <div class="panel-toolbar">
-              <div>
-                <span class="panel-kicker">MECHANICS · KINEMATICS</span>
-                <strong>速度—时间图像与微元逼近</strong>
-              </div>
-              <span class="sim-badge"><i></i> LIVE SIMULATION</span>
-            </div>
+          <svg viewBox="0 0 720 500" role="img" aria-label="运动、波动与引力的物理可视化">
+            <defs>
+              <radialGradient id="bhGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#02050a"/>
+                <stop offset="37%" stop-color="#02050a"/>
+                <stop offset="45%" stop-color="#7bdfff" stop-opacity=".12"/>
+                <stop offset="62%" stop-color="#6c7cff" stop-opacity=".07"/>
+                <stop offset="100%" stop-color="#06111f" stop-opacity="0"/>
+              </radialGradient>
 
-            <svg class="hero-physics-svg" viewBox="0 0 620 360" role="img" aria-label="标准速度时间图像与矩形面积逼近示意">
-              <defs>
-                <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#55d7f0" stop-opacity=".28"/>
-                  <stop offset="100%" stop-color="#55d7f0" stop-opacity=".08"/>
-                </linearGradient>
-              </defs>
+              <linearGradient id="diskGlow" x1="0%" y1="50%" x2="100%" y2="50%">
+                <stop offset="0%" stop-color="#55d7f0" stop-opacity="0"/>
+                <stop offset="23%" stop-color="#55d7f0" stop-opacity=".26"/>
+                <stop offset="43%" stop-color="#dff8ff" stop-opacity=".88"/>
+                <stop offset="57%" stop-color="#8ddfff" stop-opacity=".52"/>
+                <stop offset="77%" stop-color="#776dff" stop-opacity=".18"/>
+                <stop offset="100%" stop-color="#55d7f0" stop-opacity="0"/>
+              </linearGradient>
 
-              <g class="hero-grid-lines">
-                <line x1="82" y1="72"  x2="560" y2="72"/>
-                <line x1="82" y1="122" x2="560" y2="122"/>
-                <line x1="82" y1="172" x2="560" y2="172"/>
-                <line x1="82" y1="222" x2="560" y2="222"/>
+              <linearGradient id="cyanFade" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#55d7f0" stop-opacity=".20"/>
+                <stop offset="100%" stop-color="#55d7f0" stop-opacity=".85"/>
+              </linearGradient>
+
+              <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="8"/>
+              </filter>
+            </defs>
+
+            <!-- faint background grid -->
+            <g stroke="#23455b" stroke-width="1" opacity=".32">
+              <line x1="48" y1="110" x2="672" y2="110"/>
+              <line x1="48" y1="210" x2="672" y2="210"/>
+              <line x1="48" y1="310" x2="672" y2="310"/>
+              <line x1="48" y1="410" x2="672" y2="410"/>
+            </g>
+
+            <!-- kinematics mini graph -->
+            <g transform="translate(58 76)">
+              <text x="0" y="0" fill="#6fe3f8" font-size="11" font-weight="700" letter-spacing="1.4">MOTION</text>
+              <line x1="0" y1="108" x2="205" y2="108" stroke="#8fb4c8" stroke-width="1.5"/>
+              <line x1="0" y1="108" x2="0" y2="24" stroke="#8fb4c8" stroke-width="1.5"/>
+              <path d="M 0 94 L 45 80 L 90 63 L 135 47 L 180 29"
+                    fill="none" stroke="#ff7171" stroke-width="4" stroke-linecap="round"/>
+              <g fill="#63e6be" stroke="#effffb" stroke-width="1.6">
+                <circle cx="0" cy="94" r="4.8"/>
+                <circle cx="45" cy="80" r="4.8"/>
+                <circle cx="90" cy="63" r="4.8"/>
+                <circle cx="135" cy="47" r="4.8"/>
+                <circle cx="180" cy="29" r="4.8"/>
               </g>
+            </g>
 
-              <g class="hero-rects">
-                <rect x="82"  y="238" width="95" height="34"/>
-                <rect x="177" y="205" width="95" height="67"/>
-                <rect x="272" y="172" width="95" height="100"/>
-                <rect x="367" y="139" width="95" height="133"/>
-                <rect x="462" y="106" width="95" height="166"/>
-              </g>
+            <!-- black-hole inspired gravity visual -->
+            <g transform="translate(475 230)">
+              <text x="-45" y="-145" fill="#6fe3f8" font-size="11" font-weight="700" letter-spacing="1.4">GRAVITY</text>
+              <circle cx="0" cy="0" r="144" fill="url(#bhGlow)"/>
+              <ellipse cx="0" cy="0" rx="148" ry="48"
+                       fill="none" stroke="#55d7f0" stroke-opacity=".20" stroke-width="1.4"
+                       transform="rotate(-10)"/>
+              <ellipse cx="0" cy="0" rx="126" ry="34"
+                       fill="none" stroke="#9d8cff" stroke-opacity=".16" stroke-width="1.2"
+                       transform="rotate(-10)"/>
+              <ellipse cx="0" cy="0" rx="116" ry="18"
+                       fill="none" stroke="url(#diskGlow)" stroke-width="10"
+                       transform="rotate(-10)" filter="url(#softGlow)"/>
+              <ellipse cx="0" cy="0" rx="116" ry="18"
+                       fill="none" stroke="url(#diskGlow)" stroke-width="4.5"
+                       transform="rotate(-10)"/>
+              <circle cx="0" cy="0" r="48" fill="#010309"/>
+              <circle cx="0" cy="0" r="51" fill="none" stroke="#8ddfff" stroke-opacity=".12"/>
+              <path d="M -176 -42 C -82 -134, 85 -135, 176 -42"
+                    fill="none" stroke="#6d96b2" stroke-opacity=".30" stroke-width="1.2"/>
+              <circle cx="138" cy="-77" r="4.5" fill="#63e6be"/>
+            </g>
 
-              <g class="hero-axes">
-                <line x1="82" y1="272" x2="570" y2="272"/>
-                <line x1="82" y1="272" x2="82" y2="48"/>
-              </g>
+            <!-- wave motif -->
+            <g transform="translate(60 335)">
+              <text x="0" y="0" fill="#6fe3f8" font-size="11" font-weight="700" letter-spacing="1.4">WAVES</text>
+              <line x1="0" y1="62" x2="275" y2="62" stroke="#36556a" stroke-width="1"/>
+              <path d="M 0 62
+                       C 22 18, 45 18, 68 62
+                       S 114 106, 137 62
+                       S 183 18, 206 62
+                       S 252 106, 275 62"
+                    fill="none" stroke="url(#cyanFade)" stroke-width="4" stroke-linecap="round"/>
+            </g>
 
-              <g class="hero-ticks">
-                <line x1="177" y1="272" x2="177" y2="278"/>
-                <line x1="272" y1="272" x2="272" y2="278"/>
-                <line x1="367" y1="272" x2="367" y2="278"/>
-                <line x1="462" y1="272" x2="462" y2="278"/>
-                <line x1="557" y1="272" x2="557" y2="278"/>
-              </g>
+            <!-- small labels -->
+            <g fill="#7f9bad" font-size="10" font-weight="600">
+              <text x="57" y="470">observe</text>
+              <text x="122" y="470">·</text>
+              <text x="140" y="470">interact</text>
+              <text x="212" y="470">·</text>
+              <text x="230" y="470">understand</text>
+            </g>
+          </svg>
 
-              <line class="hero-vt-line" x1="82" y1="248" x2="557" y2="82"/>
-
-              <g class="hero-samples">
-                <circle cx="82"  cy="248" r="7"/>
-                <circle cx="177" cy="215" r="7"/>
-                <circle cx="272" cy="182" r="7"/>
-                <circle cx="367" cy="149" r="7"/>
-                <circle cx="462" cy="116" r="7"/>
-              </g>
-
-              <text class="hero-axis-label" x="574" y="291">t / s</text>
-              <text class="hero-axis-label" x="28" y="54">v / (m·s⁻¹)</text>
-
-              <text class="hero-note" x="364" y="63">v(t) = v₀ + at</text>
-            </svg>
-
-            <div class="hero-formulas">
-              <span>Δt = t / n</span>
-              <span>Sₙ = Σ vΔt</span>
-              <span>n → ∞</span>
-              <span>s = ∫vdt</span>
-            </div>
-
-            <div class="hero-panel-caption">
-              <span>交互参数</span>
-              <b>拖动 · 观察 · 比较 · 验证</b>
-            </div>
+          <div class="universe-foot">
+            <span>物理规律不是静止的公式，而是可以被看见的过程。</span>
           </div>
-
-          <div class="science-tag science-tag-a">MECHANICS</div>
-          <div class="science-tag science-tag-b">INTERACTIVE</div>
-          <div class="science-tag science-tag-c">SIMULATION</div>
         </div>
       </div>
     </section>
