@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>机械能守恒：双模型对比</title>
+<style>
+:root{--bg:#08131f;--panel:#0d1d2d;--panel2:#102438;--line:#24455b;--text:#edf7ff;--muted:#9eb3c2;--green:#63e6be;--blue:#5ca8ff;--orange:#f2a950;--cyan:#55d7f0;--track:#61788a}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);background:radial-gradient(circle at 50% -10%,rgba(68,150,190,.15),transparent 38%),linear-gradient(180deg,#07111c,#091827);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+.page{width:min(1500px,calc(100% - 28px));margin:auto;padding:24px 0 34px}.header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:18px}.eyebrow{color:var(--green);font-size:12px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}h1{margin:7px 0 7px;font-size:clamp(28px,3.2vw,48px);letter-spacing:-.03em}.header p{margin:0;color:var(--muted);line-height:1.7}.master-formula{padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(13,29,45,.82);font-family:Georgia,"Times New Roman",serif;font-size:22px;white-space:nowrap}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:linear-gradient(180deg,rgba(15,36,54,.98),rgba(9,24,38,.98));box-shadow:0 18px 55px rgba(0,0,0,.22)}.card-head{display:flex;justify-content:space-between;gap:18px;padding:20px 22px 14px;border-bottom:1px solid rgba(80,145,178,.13)}.card-head h2{margin:4px 0 3px;font-size:24px}.card-head p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}.badge{align-self:flex-start;border:1px solid rgba(99,230,190,.25);color:var(--green);background:rgba(99,230,190,.08);padding:6px 9px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap}
+.canvas-wrap{margin:16px 18px 0;height:330px;border:1px solid rgba(77,139,170,.16);background:#07121e;border-radius:16px;overflow:hidden}canvas{width:100%;height:100%;display:block}.formula-line{padding:12px 20px 0;color:#c8dce7;font-size:14px}.formula-line code{color:#eaf9ff;font-family:Georgia,"Times New Roman",serif;font-size:17px;background:none}
+.energy{padding:16px 20px 20px}.energy-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.energy-box{border:1px solid rgba(83,143,173,.16);background:rgba(5,17,28,.55);border-radius:14px;padding:13px 14px}.energy-name{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:14px;color:#c7d9e4}.energy-name b{color:white;font-size:17px}.bar{height:10px;margin-top:10px;background:#193044;border-radius:99px;overflow:hidden}.fill{height:100%;width:0;border-radius:99px;transition:width .08s linear}.green{background:var(--green)}.blue{background:var(--blue)}.stackbar{height:13px;display:flex;margin-top:12px;background:#193044;border-radius:99px;overflow:hidden}.stack-eg{background:var(--green);width:0}.stack-es{background:var(--orange);width:0}.total{display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:var(--muted);font-size:14px}.total strong{color:white;font-size:17px}.breakdown{margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid rgba(83,143,173,.14);color:#b6cad7;font-size:13px;line-height:1.7}.breakdown .eg{color:var(--green)}.breakdown .es{color:var(--orange)}
+.controls{display:grid;gap:10px;padding:0 20px 20px}.control{display:grid;grid-template-columns:100px 72px 1fr;align-items:center;gap:10px}.control label{font-size:14px;font-weight:700}.val{color:#d7e6ef;text-align:center;font-size:14px}input[type=range]{width:100%;accent-color:#e6f7ff}.buttons{display:flex;justify-content:flex-end;gap:8px;margin-top:2px}button{border:1px solid #31556d;background:#10283b;color:white;border-radius:10px;padding:8px 13px;cursor:pointer;font-size:14px}button:hover{background:#17354d}
+@media(max-width:1000px){.compare{grid-template-columns:1fr}.header{align-items:flex-start;flex-direction:column}.master-formula{white-space:normal}}@media(max-width:600px){.page{width:min(100% - 16px,1500px)}.energy-row{grid-template-columns:1fr}.control{grid-template-columns:1fr 70px}.control input{grid-column:1/-1}.canvas-wrap{height:285px}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div><div class="eyebrow">Mechanical Energy Conservation</div><h1>机械能守恒：两种模型对比</h1><p>左侧观察“重力势能 ↔ 动能”，右侧观察蹦极中“动能 ↔ 总势能”的转化。</p></div>
+    <div class="master-formula">E<sub>机械</sub> = E<sub>k</sub> + E<sub>p</sub> = 常量</div>
+  </div>
+  <div class="compare">
+    <section class="card">
+      <div class="card-head"><div><div class="eyebrow">MODEL A · 重力场</div><h2>U 形轨道：动能与重力势能</h2><p>忽略摩擦，只有重力势能和动能相互转化。</p></div><span class="badge">E<sub>p重</sub> + E<sub>k</sub></span></div>
+      <div class="canvas-wrap"><canvas id="trackCanvas"></canvas></div>
+      <div class="formula-line"><code>E = mgh + ½mv²</code></div>
+      <div class="energy">
+        <div class="energy-row">
+          <div class="energy-box"><div class="energy-name"><span>重力势能 E<sub>p重</sub></span><b id="leftEpText">60.0 J</b></div><div class="bar"><div class="fill green" id="leftEpBar"></div></div></div>
+          <div class="energy-box"><div class="energy-name"><span>动能 E<sub>k</sub></span><b id="leftEkText">0.0 J</b></div><div class="bar"><div class="fill blue" id="leftEkBar"></div></div></div>
+        </div>
+        <div class="total"><span>当前速度：<strong><span id="leftVText">0.0</span> m/s</strong></span><span>总机械能：<strong><span id="leftTotalText">60.0</span> J</strong></span></div>
+      </div>
+      <div class="controls"><div class="control"><label>起始高度 h₀</label><div class="val"><span id="leftHVal">6.0</span> m</div><input id="leftHeightSlider" type="range" min="1" max="8" step="0.1" value="6"></div><div class="buttons"><button id="leftResetBtn">重新开始</button><button id="leftToggleBtn">暂停</button></div></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><div><div class="eyebrow">MODEL B · 蹦极</div><h2>蹦极：动能与势能</h2><p>这里把势能看成“重力势能 + 弹性势能”。</p></div><span class="badge">E<sub>p</sub> = E<sub>p重</sub> + E<sub>p弹</sub></span></div>
+      <div class="canvas-wrap"><canvas id="bungeeCanvas"></canvas></div>
+      <div class="formula-line"><code>E = E<sub>k</sub> + (E<sub>p重</sub> + E<sub>p弹</sub>)</code></div>
+      <div class="energy">
+        <div class="energy-row">
+          <div class="energy-box"><div class="energy-name"><span>总势能 E<sub>p</sub></span><b id="rightEpText">12000 J</b></div><div class="stackbar"><div class="stack-eg" id="rightEgStack"></div><div class="stack-es" id="rightEsStack"></div></div></div>
+          <div class="energy-box"><div class="energy-name"><span>动能 E<sub>k</sub></span><b id="rightEkText">0 J</b></div><div class="bar"><div class="fill blue" id="rightEkBar"></div></div></div>
+        </div>
+        <div class="breakdown">势能内部组成：<span class="eg">重力势能 <b id="rightEgText">12000 J</b></span> ＋ <span class="es">弹性势能 <b id="rightEsText">0 J</b></span></div>
+        <div class="total"><span>速度：<strong><span id="rightVText">0.0</span> m/s</strong></span><span>总机械能：<strong><span id="rightTotalText">12000</span> J</strong></span></div>
+      </div>
+      <div class="controls">
+        <div class="control"><label>质量 m</label><div class="val"><span id="rightMVal">60</span> kg</div><input id="rightMSlider" type="range" min="40" max="80" step="5" value="60"></div>
+        <div class="control"><label>绳原长 L₀</label><div class="val"><span id="rightLVal">8.0</span> m</div><input id="rightLSlider" type="range" min="5" max="10" step="0.5" value="8"></div>
+        <div class="buttons"><button id="rightResetBtn">重新开始</button><button id="rightToggleBtn">暂停</button></div>
+      </div>
+    </section>
+  </div>
+</div>
+<script>
+(()=>{
+const fit=(c,x)=>{const r=c.getBoundingClientRect(),d=Math.max(1,devicePixelRatio||1);c.width=Math.round(r.width*d);c.height=Math.round(r.height*d);x.setTransform(d,0,0,d,0,0)};
+// LEFT
+const gL=10,mL=1,kT=8/49,cL=document.getElementById('trackCanvas'),xC=cL.getContext('2d'),sL=document.getElementById('leftHeightSlider');let h0=+sL.value,x=Math.sqrt(h0/kT),dir=-1,runL=true;
+const yT=x=>kT*x*x,dydx=x=>2*kT*x;
+function resetL(){h0=+sL.value;x=Math.sqrt(h0/kT);dir=-1;runL=true;leftToggleBtn.textContent='暂停';updateL()}
+function stepL(dt){const y=yT(x),v=Math.sqrt(2*gL*Math.max(0,h0-y)),metric=Math.sqrt(1+dydx(x)**2);let dx=dir*v/metric;if(v<.02)dx=dir*.18;x+=dx*dt;const xm=Math.sqrt(h0/kT);if(x<=-xm){x=-xm;dir=1}else if(x>=xm){x=xm;dir=-1}}
+function updateL(){const y=Math.min(h0,Math.max(0,yT(x))),Ep=mL*gL*y,Et=mL*gL*h0,Ek=Math.max(0,Et-Ep),v=Math.sqrt(2*Ek/mL);leftHVal.textContent=h0.toFixed(1);leftEpText.textContent=Ep.toFixed(1)+' J';leftEkText.textContent=Ek.toFixed(1)+' J';leftVText.textContent=v.toFixed(1);leftTotalText.textContent=Et.toFixed(1);leftEpBar.style.width=(Ep/Et*100).toFixed(1)+'%';leftEkBar.style.width=(Ek/Et*100).toFixed(1)+'%';drawL(y)}
+function drawL(h){const W=cL.clientWidth,H=cL.clientHeight,p=42,t=24,b=H-42,x0=-7.4,x1=7.4,sx=z=>p+(z-x0)/(x1-x0)*(W-2*p),sy=z=>b-(z/8.4)*(b-t);xC.clearRect(0,0,W,H);xC.setLineDash([5,5]);xC.strokeStyle='#29475c';xC.lineWidth=1;xC.beginPath();xC.moveTo(p,sy(0));xC.lineTo(W-p,sy(0));xC.stroke();xC.setLineDash([]);xC.strokeStyle='#60788a';xC.lineWidth=6;xC.lineCap='round';xC.beginPath();for(let i=0;i<=220;i++){const xm=x0+(x1-x0)*i/220,ym=yT(xm),px=sx(xm),py=sy(ym);i?xC.lineTo(px,py):xC.moveTo(px,py)}xC.stroke();const bx=sx(x),by=sy(h),base=sy(0);xC.strokeStyle='#9cb9c9';xC.lineWidth=1.2;xC.beginPath();xC.moveTo(bx-22,by);xC.lineTo(bx-22,base);xC.stroke();xC.fillStyle='#bcd2de';xC.font='600 15px Microsoft YaHei';xC.textAlign='right';xC.textBaseline='middle';xC.fillText(`h = ${h.toFixed(1)} m`,bx-32,(by+base)/2);xC.fillStyle='#63e6be';xC.beginPath();xC.arc(bx,by-10,13,0,Math.PI*2);xC.fill();xC.strokeStyle='#effffb';xC.lineWidth=2;xC.stroke();xC.textBaseline='alphabetic';xC.fillStyle='#7697aa';xC.font='12px Microsoft YaHei';xC.textAlign='left';xC.fillText('重力势能最高',p+6,t+16);xC.textAlign='center';xC.fillText('动能最高',W/2,b-10)}
+// RIGHT
+const gR=10,HR=20,kR=260,cR=document.getElementById('bungeeCanvas'),rC=cR.getContext('2d'),mS=document.getElementById('rightMSlider'),lS=document.getElementById('rightLSlider');let m=+mS.value,L0=+lS.value,y=0,v=0,runR=true;
+const EtR=()=>m*gR*HR;function ER(){const Eg=m*gR*Math.max(0,HR-y),st=Math.max(0,y-L0),Es=.5*kR*st*st,Ek=.5*m*v*v;return{Eg,Es,Ek,st}}
+function aR(){const st=Math.max(0,y-L0);return st<=0?gR:gR-kR*st/m}
+function resetR(){m=+mS.value;L0=+lS.value;y=0;v=0;runR=true;rightToggleBtn.textContent='暂停';rightMVal.textContent=m.toFixed(0);rightLVal.textContent=L0.toFixed(1);updateR()}
+function stepR(dt){v+=aR()*dt;y+=v*dt;if(y<0){y=0;v=Math.abs(v)}if(y>=HR){y=HR;v=0;runR=false;rightToggleBtn.textContent='继续'}}
+function updateR(){const{Eg,Es,Ek,st}=ER(),Et=EtR(),Ep=Eg+Es,pct=q=>Math.max(0,Math.min(100,q/Et*100));rightEpText.textContent=Ep.toFixed(0)+' J';rightEkText.textContent=Ek.toFixed(0)+' J';rightEgText.textContent=Eg.toFixed(0)+' J';rightEsText.textContent=Es.toFixed(0)+' J';rightVText.textContent=Math.abs(v).toFixed(1);rightTotalText.textContent=Et.toFixed(0);rightEgStack.style.width=pct(Eg)+'%';rightEsStack.style.width=pct(Es)+'%';rightEkBar.style.width=pct(Ek)+'%';drawR(st)}
+function drawR(st){const W=cR.clientWidth,H=cR.clientHeight,t=34,b=H-36,bx=W*.56,pL=W*.18,pR=W*.70,py=d=>t+(d/HR)*(b-t);rC.clearRect(0,0,W,H);rC.strokeStyle='#6f8492';rC.lineWidth=6;rC.lineCap='round';rC.beginPath();rC.moveTo(pL,t);rC.lineTo(pR,t);rC.stroke();rC.fillStyle='#9fb6c4';rC.font='600 14px Microsoft YaHei';rC.textAlign='left';rC.fillText('固定点',pL,t-10);rC.strokeStyle='#355064';rC.lineWidth=2;rC.beginPath();rC.moveTo(W*.12,b);rC.lineTo(W*.88,b);rC.stroke();rC.setLineDash([5,5]);rC.strokeStyle='#38566b';rC.lineWidth=1;rC.beginPath();rC.moveTo(W*.16,py(L0));rC.lineTo(W*.86,py(L0));rC.stroke();rC.setLineDash([]);rC.fillStyle='#708fa2';rC.font='12px Microsoft YaHei';rC.fillText(`L₀ = ${L0.toFixed(1)} m`,W*.17,py(L0)-7);const bodyY=py(y);rC.strokeStyle=st>0?'#f2a950':'#718493';rC.lineWidth=st>0?6:4;rC.beginPath();rC.moveTo(bx,t);rC.lineTo(bx,Math.max(t,bodyY-17));rC.stroke();rC.fillStyle='#5ca8ff';rC.beginPath();rC.arc(bx,bodyY,14,0,Math.PI*2);rC.fill();rC.strokeStyle='#e8f4ff';rC.lineWidth=1.5;rC.stroke();const h=Math.max(0,HR-y);rC.strokeStyle='#93aebb';rC.lineWidth=1;rC.beginPath();rC.moveTo(bx+30,bodyY);rC.lineTo(bx+30,b);rC.stroke();rC.fillStyle='#b8ccd7';rC.font='600 14px Microsoft YaHei';rC.textAlign='left';rC.textBaseline='middle';rC.fillText(`h = ${h.toFixed(1)} m`,bx+40,(bodyY+b)/2);let stage=y<L0-.02?(v>=0?'自由下落：重力势能 → 动能':'回升：动能 → 重力势能'):(v>=0?'绳伸长：能量逐渐储存在弹性势能中':'绳回缩：弹性势能重新释放');rC.textBaseline='alphabetic';rC.textAlign='center';rC.fillStyle='#dceaf2';rC.font='700 14px Microsoft YaHei';rC.fillText(stage,W/2,H-10)}
+let last=performance.now();function frame(now){const raw=Math.min(.022,(now-last)/1000);last=now;if(runL)stepL(raw);if(runR){const n=4,dt=raw/n;for(let i=0;i<n;i++)stepR(dt)}updateL();updateR();requestAnimationFrame(frame)}
+function resize(){fit(cL,xC);fit(cR,rC);updateL();updateR()}sL.addEventListener('input',resetL);leftResetBtn.addEventListener('click',resetL);leftToggleBtn.addEventListener('click',()=>{runL=!runL;leftToggleBtn.textContent=runL?'暂停':'继续'});[mS,lS].forEach(e=>e.addEventListener('input',resetR));rightResetBtn.addEventListener('click',resetR);rightToggleBtn.addEventListener('click',()=>{runR=!runR;rightToggleBtn.textContent=runR?'暂停':'继续'});window.addEventListener('resize',resize);resize();resetL();resetR();requestAnimationFrame(frame);
+})();
+</script>
+</body></html>
