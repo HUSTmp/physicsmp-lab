@@ -18,8 +18,8 @@
         </span>
       </a>
       <nav class="nav-links">
-        <a href="#experiments">实验</a>
-        <a href="#categories">分类</a>
+        <a href="#experiments">精选实验</a>
+        <a href="#categories">知识模块</a>
         <a href="#about">关于</a>
       </nav>
     </div>
@@ -36,13 +36,13 @@
             通过调节参数、观察图像和比较数值，让公式背后的物理过程真正可视化。
           </p>
           <div class="hero-actions">
-            <a class="btn primary" href="#experiments">开始实验</a>
-            <a class="btn secondary" href="#about">了解项目</a>
+            <a class="btn primary" href="#categories">按知识模块学习</a>
+            <a class="btn secondary" href="#experiments">查看精选实验</a>
           </div>
 
           <div class="hero-stats">
             <div><b>02</b><span>已上线实验</span></div>
-            <div><b>04</b><span>规划模块</span></div>
+            <div><b>04</b><span>知识模块</span></div>
             <div><b>100%</b><span>浏览器直接运行</span></div>
           </div>
         </div>
@@ -89,18 +89,18 @@
       <div class="container">
         <div class="section-heading">
           <div>
-            <span class="eyebrow">Experiments</span>
-            <h2>仿真实验</h2>
+            <span class="eyebrow">Featured Experiments</span>
+            <h2>精选实验</h2>
           </div>
-          <p>每个实验都可以直接调参数、看图像、比较数值。</p>
+          <p>从典型问题进入交互观察；完整内容按“知识模块”继续展开。</p>
         </div>
 
-        <div class="experiment-grid">
+        <div class="experiment-grid featured-grid">
           <article class="experiment-card featured">
             <div class="card-badge">已上线</div>
             <div class="experiment-icon">Σ</div>
             <div class="experiment-content">
-              <span class="category">运动学 · 微元法</span>
+              <span class="category">力学 · 运动学 · 微元法</span>
               <h3>匀变速直线运动：位移公式推导</h3>
               <p>
                 通过把 v–t 图像下的面积划分成多个小矩形，观察分割数 n 增大时，
@@ -119,7 +119,7 @@
             <div class="card-badge">已上线</div>
             <div class="experiment-icon">↓</div>
             <div class="experiment-content">
-              <span class="category">运动学 · 自由落体 · 频闪</span>
+              <span class="category">力学 · 运动学 · 自由落体</span>
               <h3>频闪下的自由落体：为什么水滴看起来静止？</h3>
               <p>
                 对比连续光与频闪光，观察自由落体水滴在离散采样下产生的“表观静止”。
@@ -128,19 +128,9 @@
               <div class="tags">
                 <span>自由落体</span>
                 <span>频闪</span>
-                <span>视觉暂留 / 采样</span>
+                <span>采样</span>
               </div>
               <a class="btn primary card-button" href="programs/水滴（频闪）动画.html">进入实验 →</a>
-            </div>
-          </article>
-
-          <article class="experiment-card coming">
-            <div class="card-badge muted">规划中</div>
-            <div class="experiment-icon">↗</div>
-            <div class="experiment-content">
-              <span class="category">曲线运动</span>
-              <h3>平抛与斜抛运动</h3>
-              <p>同时观察 x、y 两个方向的独立运动以及合成轨迹。</p>
             </div>
           </article>
         </div>
@@ -154,29 +144,33 @@
             <span class="eyebrow">Categories</span>
             <h2>知识模块</h2>
           </div>
-          <p>网站可以逐步扩展成一套完整的交互式物理资源库。</p>
+          <p>先选择物理模块，再进入对应知识点与实验；随着内容增加，网站仍然保持清晰。</p>
         </div>
 
         <div class="category-grid">
-          <div class="category-card">
+          <a class="category-card category-link" href="modules/mechanics.html">
             <span class="num">01</span>
             <h3>力学</h3>
             <p>运动学、牛顿运动定律、曲线运动、机械能、动量。</p>
-          </div>
-          <div class="category-card">
+            <span class="module-meta">2 个实验 · 进入模块 →</span>
+          </a>
+          <div class="category-card coming-module">
             <span class="num">02</span>
             <h3>电磁学</h3>
             <p>电场、磁场、带电粒子运动、电磁感应、电路。</p>
+            <span class="module-meta muted-text">规划中</span>
           </div>
-          <div class="category-card">
+          <div class="category-card coming-module">
             <span class="num">03</span>
             <h3>振动与波</h3>
             <p>简谐运动、机械波、叠加、干涉、驻波。</p>
+            <span class="module-meta muted-text">规划中</span>
           </div>
-          <div class="category-card">
+          <div class="category-card coming-module">
             <span class="num">04</span>
             <h3>光学与近代物理</h3>
             <p>几何光学、干涉衍射、光电效应与基础近代物理。</p>
+            <span class="module-meta muted-text">规划中</span>
           </div>
         </div>
       </div>
