@@ -71,7 +71,8 @@ h1 span{
 .graph-card{
   border:1px solid #21465f;border-radius:24px;padding:20px;
   background:linear-gradient(180deg,rgba(15,37,56,.96),rgba(8,23,37,.96));
-  box-shadow:var(--shadow);transform:rotate(1.2deg)
+  box-shadow:var(--shadow);
+  transform:none;
 }
 .graph-top{display:flex;justify-content:space-between;color:#d6e8f4;font-size:13px;margin-bottom:6px}
 .live-dot{
