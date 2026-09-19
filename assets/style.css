@@ -376,3 +376,18 @@ footer{border-top:1px solid #19364b;padding:34px 0 44px;color:#9ab0c0}
   }
 }
 
+
+/* 精选实验卡片对齐 */
+.featured-grid .experiment-card{
+  display:flex;
+  flex-direction:column;
+}
+.featured-grid .experiment-content{
+  display:flex;
+  flex-direction:column;
+  flex:1;
+}
+.featured-grid .tags{
+  margin-top:auto;
+}
+
