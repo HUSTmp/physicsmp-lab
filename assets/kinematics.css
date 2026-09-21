@@ -32,4 +32,6 @@
 .takeaways h3{font-size:18px}
 .takeaways p{font-size:14px;line-height:1.9}
 .back-button{white-space:nowrap}
+.experiment-title{font-size:36px;line-height:1.3}
+@media(max-width:600px){.experiment-title{font-size:28px}}
 
