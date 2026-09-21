@@ -27,3 +27,9 @@
   :fullscreen .parameter{padding-top:14px}
 }
 
+/* 课堂要点与返回按钮 */
+.takeaways span{font-size:13px}
+.takeaways h3{font-size:18px}
+.takeaways p{font-size:14px;line-height:1.9}
+.back-button{white-space:nowrap}
+

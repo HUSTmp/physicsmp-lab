@@ -28,6 +28,8 @@
     margin:0 auto;
     padding:22px;
   }
+  .experiment-nav{display:flex;justify-content:flex-end;margin-bottom:14px}
+  .back-button{font-size:14px;white-space:nowrap}
   h1{font-size:24px;margin:0 0 6px}
   .sub{color:var(--muted);font-size:14px;margin-bottom:16px}
   .grid{
@@ -128,6 +130,7 @@
 </head>
 <body>
 <div class="wrap">
+  <div class="experiment-nav"><button type="button" class="back-button" onclick="if (history.length > 1) history.back(); else location.href='../index.html';">← 返回上一个节目</button></div>
   <h1>频闪下的自由落体：为什么水滴看起来静止？</h1>
   <div class="sub">设 A→B = 10 cm，取 g = 10 m/s²，因此频闪周期 Δt = √(2×0.10/10) = √0.02 s ≈ 0.141 s。</div>
 
@@ -466,3 +469,4 @@ speed.oninput=()=>{
 </script>
 </body>
 </html>
+
