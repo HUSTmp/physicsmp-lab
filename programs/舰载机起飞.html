@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="对比弹射助推与航母航行两种方案，理解匀加速运动和参考系中的速度叠加。">
+  <title>舰载机起飞 · PhysicsMP Lab</title>
+  <link rel="stylesheet" href="../assets/kinematics.css">
+  <link rel="stylesheet" href="../assets/carrier.css">
+  <script src="../assets/vendor/three.min.js" defer></script>
+  <script src="../assets/vendor/OrbitControls.js" defer></script>
+  <script src="../assets/carrier-app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html"><span class="brand-mark">P</span><span>PhysicsMP <b>Lab</b></span></a>
+    <div class="top-actions"><a class="quiet-button" href="../index.html#experiments">← 返回实验</a><button id="fullscreen" class="quiet-button">⛶ 全屏演示</button></div>
+  </header>
+  <main>
+    <div class="page-heading"><div><div class="eyebrow">运动学 / 参考系与速度叠加</div><h1 class="experiment-title">舰载机如何达到起飞速度？</h1><p>同一段甲板，两种助推方式。比较初速度与航母航速的不同作用。</p></div><span class="constant-badge"><i></i> 三维场景 · 同步对比</span></div>
+    <section class="presets" aria-label="课堂预设"><span class="preset-label">试一试</span><button class="preset active" data-preset="threshold" aria-pressed="true">◎ 两种方案恰好达标</button><button class="preset" data-preset="none" aria-pressed="false">↗ 没有助推会怎样？</button><button class="preset" data-preset="equal" aria-pressed="false">⇄ 都增加 5 m/s</button></section>
+    <div class="carrier-layout">
+      <div class="workspace">
+        <div class="scene-grid">
+          <section class="panel scene-panel"><div class="panel-heading"><h2><span class="scenario-letter">A</span>弹射助推</h2><span class="small-label">航母静止</span></div><p class="scene-intro">先获得相对甲板初速度，再匀加速滑跑。</p><div class="scene-view"><canvas id="scene-catapult" aria-label="方案 A：飞机在静止航母甲板上加速起飞的三维动画"></canvas><span class="view-label">地面参考系 · 示意比例</span></div><div class="motion-options"><span>航母固定在初始位置</span><span>对地位移 0.00 m</span></div><div class="hud" id="hud-catapult"><div class="result-state" data-field="status">等待开始</div><div class="readouts"><div><span>甲板位移 / m</span><strong data-field="distance">0.00</strong></div><div><span>滑跑用时 / s</span><strong data-field="run-time">0.00</strong></div><div><span>相对甲板 / m·s⁻¹</span><strong data-field="rel-speed">10.00</strong></div><div><span>对空气 / m·s⁻¹</span><strong class="mint-text" data-field="world-speed">10.00</strong></div></div><div class="speed-meter" aria-hidden="true"><div data-field="meter"></div></div><p class="end-speed" data-field="prediction"></p></div></section>
+          <section class="panel scene-panel"><div class="panel-heading"><h2><span class="scenario-letter blue">B</span>航母航行</h2><span class="small-label">无弹射初速</span></div><p class="scene-intro">从甲板上静止出发，叠加航母的航速。</p><div class="scene-view"><canvas id="scene-moving" aria-label="方案 B：飞机在匀速前进的航母甲板上加速起飞的三维动画"></canvas><span class="view-label" id="moving-view-label">航母平移 ×6 · 示意增强</span><div class="carrier-motion"><span>航母向前航行 →</span><strong id="carrier-distance">0.00 m</strong><small>相对地面的真实位移</small></div></div><div class="motion-options"><label><input id="enhance-motion" type="checkbox" checked> 增强航母平移</label><span>虚线框：初始位置 · 橙色标杆：固定参照</span></div><div class="hud" id="hud-moving"><div class="result-state" data-field="status">等待开始</div><div class="readouts"><div><span>甲板位移 / m</span><strong data-field="distance">0.00</strong></div><div><span>滑跑用时 / s</span><strong data-field="run-time">0.00</strong></div><div><span>相对甲板 / m·s⁻¹</span><strong data-field="rel-speed">0.00</strong></div><div><span>对空气 / m·s⁻¹</span><strong class="mint-text" data-field="world-speed">1.01</strong></div></div><div class="speed-meter" aria-hidden="true"><div data-field="meter"></div></div><p class="end-speed" data-field="prediction"></p></div></section>
+        </div>
+        <section class="panel playback" aria-label="播放控制"><div class="playback-row"><button class="play-button" id="play">▶ 开始演示</button><button class="icon-button" id="reset" aria-label="回到起点">↺</button><button class="step-button" id="step">+ 0.5 s</button><label class="speed-control">播放速度 <select id="speed" aria-label="播放速度"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label></div><div class="timeline"><output id="time-value">0.00 s</output><input id="time" type="range" min="0" max="11.165" step="any" value="0" aria-label="演示时间"><span id="duration-end">11.16 s</span></div><div class="playback-help"><span>拖动画面旋转 · 滚轮缩放 · <button id="camera-reset">恢复视角</button></span><span>空格键：播放 / 暂停</span></div></section>
+        <p id="render-error" role="status" hidden></p>
+      </div>
+      <aside class="sidebar">
+        <section class="panel parameters"><div class="panel-heading"><h2>实验条件</h2><span class="small-label">理想化模型</span></div><dl class="conditions"><div><dt>有效滑跑长度 L</dt><dd>200 m</dd></div><div><dt>相对甲板加速度 a</dt><dd>6 m/s²</dd></div><div><dt>所需对空气速度</dt><dd>50 m/s</dd></div></dl><div class="parameter"><div class="parameter-title"><label for="catapult-speed">A · 弹射初速度 u</label><output id="catapult-label">10.00 m/s</output></div><input id="catapult-speed" type="range" min="0" max="20" step="0.1" value="10"><div class="range-labels"><span>0</span><span>20 m/s</span></div></div><div class="parameter"><div class="parameter-title"><label for="carrier-speed">B · 航母航速 V</label><output id="carrier-label">≈ 1.0102 m/s</output></div><input id="carrier-speed" type="range" min="0" max="10" step="any" value="1.01020514433644"><div class="range-labels"><span>0</span><span>10 m/s</span></div></div><p class="parameter-note">修改参数会暂停并回到起点。速度条以 50 m/s 为满格。</p></section>
+        <section class="panel insight"><div class="eyebrow">观察与思考</div><h2>为什么不是都加 1.01 m/s？</h2><p>弹射初速参与甲板内的加速过程；航母航速则加到飞机的相对甲板速度上。</p><div class="formula-stack">
+          <div class="formula-card"><div class="formula-caption">A · 弹射助推 / 末端速度</div>
+            <math display="block" aria-label="对空气速度等于根号下 u 的平方加 2aL"><msub><mi>v</mi><mtext>空气</mtext></msub><mo>=</mo><msqrt><msup><mi>u</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>a</mi><mi>L</mi></msqrt></math>
+            <div class="threshold-label">恰好达标所需初速</div><math display="block" class="threshold-math"><msub><mi>u</mi><mtext>临界</mtext></msub><mo>=</mo><msqrt><msup><mn>50</mn><mn>2</mn></msup><mo>−</mo><mn>2400</mn></msqrt></math><div class="threshold-result">= 10 <span>m/s</span></div>
+          </div>
+          <div class="formula-card"><div class="formula-caption">B · 航母航行 / 末端速度</div>
+            <math display="block" aria-label="对空气速度等于航母航速 V 加根号下 2aL"><msub><mi>v</mi><mtext>空气</mtext></msub><mo>=</mo><mi>V</mi><mo>+</mo><msqrt><mn>2</mn><mi>a</mi><mi>L</mi></msqrt></math>
+            <div class="threshold-label">恰好达标所需航速</div><math display="block" class="threshold-math"><msub><mi>V</mi><mtext>临界</mtext></msub><mo>=</mo><mn>50</mn><mo>−</mo><msqrt><mn>2400</mn></msqrt></math><div class="threshold-result">≈ 1.010205 <span>m/s</span></div>
+          </div>
+        </div></section>
+      </aside>
+    </div>
+    <section class="takeaways"><article><span>01 / 选定参考系</span><h3>对甲板与对空气</h3><p>假设空气相对地面静止，航母沿起飞方向匀速航行。因此，对空气速度 = 相对甲板速度 + 航母航速。</p></article><article><span>02 / 比较临界条件</span><h3>看精确值，再判断达标</h3><p>不助推时，甲板末端速度约 48.99 m/s。临界预设使用未舍入值计算；手动设置 1.01 m/s 航速仍略低于要求。</p></article><article><span>03 / 理解模型</span><h3>关注滑跑阶段的运动学</h3><p>弹射简化为起点瞬间赋予初速，不等同于滑跃起飞。忽略风和阻力；离舰爬升为示意，未达标时停留在末端展示结果，不模拟后续运动。增强模式只放大航母及机上飞机的整体平移，数值仍为真实值；取消勾选可恢复真实平移比例。</p></article></section>
+    <footer><span>PhysicsMP Lab · 让物理过程可视化</span><a href="匀变速直线运动.html">继续探索：匀变速直线运动 →</a></footer>
+    <noscript>此实验需要开启浏览器 JavaScript。</noscript>
+  </main>
+</body>
+</html>
+
