@@ -394,3 +394,25 @@ footer{border-top:1px solid #19364b;padding:34px 0 44px;color:#9ab0c0}
   margin-top:auto;
 }
 
+
+/* Four featured experiments: balanced cards, with the full catalogue one click away. */
+#experiments{scroll-margin-top:90px}
+.featured-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.featured-grid .experiment-card{padding:28px;min-height:0;grid-column:auto}
+.featured-grid .experiment-icon{width:48px;height:48px;border-radius:13px;font-size:25px}
+.featured-grid .experiment-content{margin-top:24px}
+.featured-grid .experiment-content h3{font-size:23px;line-height:1.4;margin-bottom:12px}
+.featured-grid .experiment-content p{font-size:15px;line-height:1.85;margin-bottom:20px}
+.featured-grid .tags{margin-top:auto;margin-bottom:20px;gap:7px}
+.featured-grid .card-button{align-self:flex-start;min-width:142px}
+.featured-grid .new-experiment-card{border-color:#397e73;background:linear-gradient(145deg,#103334,#0a1b2b)}
+.all-experiments{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:24px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+.all-experiments .btn{white-space:nowrap}
+a:focus-visible{outline:3px solid var(--green);outline-offset:5px}
+@media(max-width:680px){
+  .featured-grid{grid-template-columns:1fr;gap:16px}
+  .featured-grid .experiment-card{padding:23px}
+  .featured-grid .experiment-content h3{font-size:21px}
+  .all-experiments{align-items:flex-start;flex-direction:column;font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.category-link{transition:none}}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="汽车从静止加速追赶匀速自行车，通过动画、速度图像和间距图像理解追及相遇。">
+  <title>追及相遇 · PhysicsMP Lab</title>
+  <link rel="stylesheet" href="../assets/kinematics.css">
+  <link rel="stylesheet" href="../assets/pursuit.css">
+  <script src="../assets/pursuit-physics.js" defer></script>
+  <script src="../assets/pursuit-app.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="../index.html"><span class="brand-mark">P</span><span>PhysicsMP <b>Lab</b></span></a><div class="top-actions"><a class="quiet-button" href="../index.html#experiments">← 返回实验</a><button id="fullscreen" class="quiet-button">⛶ 全屏演示</button></div></header>
+  <main>
+    <div class="page-heading"><div><div class="eyebrow">运动学 / 追及与相遇</div><h1>速度赶上了，位置也赶上了吗？</h1><p>一辆从静止加速的汽车，追赶一辆匀速行驶的自行车。</p></div><span class="constant-badge"><i></i> 运动 · 图像 · 公式同步</span></div>
+    <details class="problem"><summary>查看原题与模型条件</summary><p>汽车在十字路口等候绿灯，绿灯亮时以 3 m/s² 的加速度从静止开始行驶。恰在此时，一辆以 6 m/s 匀速行驶的自行车从后面超过汽车。① 追上之前，何时两车相距最远？距离是多少？② 何时汽车追上自行车？此时汽车速度是多少？</p><p>以绿灯亮、两车同位置为 t = 0；向右为正方向。两车视为质点，忽略车长；分行绘制仅为便于比较，间距指沿运动方向的位置差。</p></details>
+    <section class="presets" aria-label="关键时刻"><span class="preset-label">关键时刻</span><button class="preset" id="start-event">① 同地出发 · 0 s</button><button class="preset" id="equal-event">② 同速最远 · 2 s</button><button class="preset" id="catch-event">③ 追上相遇 · 4 s</button><button class="preset" id="original">恢复原题参数</button></section>
+    <div class="experiment-layout pursuit-layout">
+      <div class="workspace">
+        <section class="panel motion-panel">
+          <div class="panel-heading"><h2><span class="section-dot"></span>绿灯亮，开始追赶</h2><span id="phase" class="state-badge" role="status">同地出发</span></div>
+          <div class="track-caption"><span><i class="legend-line mint"></i>汽车：从静止匀加速</span><span><i class="legend-line amber"></i>自行车：匀速 →</span></div>
+          <svg id="road" viewBox="0 0 960 285" role="img" aria-labelledby="road-title road-desc">
+            <title id="road-title">汽车追赶自行车的位置动画</title><desc id="road-desc">两车从同一位置出发，横坐标为相对路口的位移。</desc>
+            <defs><pattern id="road-dashes" width="62" height="6" patternUnits="userSpaceOnUse"><rect width="30" height="3" fill="#526175"/></pattern><marker id="arrow-mint" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#73e3bd"/></marker><marker id="arrow-amber" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="#ffc278"/></marker></defs>
+            <rect x="30" y="61" width="900" height="153" rx="12" fill="#1c2b3a"/>
+            <path d="M30 62H930M30 214H930" stroke="#3a4d60"/>
+            <rect x="30" y="139" width="900" height="4" fill="url(#road-dashes)"/>
+            <g opacity=".35" fill="#8195a7"><rect x="57" y="74" width="12" height="24"/><rect x="57" y="108" width="12" height="24"/><rect x="57" y="151" width="12" height="24"/><rect x="57" y="184" width="12" height="20"/></g>
+            <g transform="translate(40 8)"><rect width="19" height="42" rx="5" fill="#07101b" stroke="#384b5d"/><circle cx="9.5" cy="11" r="5" fill="#473a40"/><circle cx="9.5" cy="29" r="6" fill="#73e3bd"/><path d="M9.5 42v11" stroke="#657a8e" stroke-width="3"/></g>
+            <text x="75" y="30" fill="#9eafbf" font-size="12">路口 / 起点</text><text x="907" y="30" text-anchor="end" fill="#9eafbf" font-size="12">地面参考系 · 固定位置刻度</text>
+            <path id="gap-guides" stroke="#ffc278" stroke-dasharray="4 4" fill="none"/>
+            <path id="gap-bracket" stroke="#ffc278" stroke-width="2" fill="none"/>
+            <text id="gap-label" y="53" text-anchor="middle" fill="#ffc278" font-size="14" font-weight="600"></text>
+            <g id="car"><ellipse cx="0" cy="12" rx="30" ry="5" fill="#080f19" opacity=".5"/><path d="M-30 3v-13l10-4 9-13H10l13 14 10 5v11Z" fill="#73e3bd"/><path d="M-15-15l7-9H8l9 9Z" fill="#143c47"/><path d="M0-24v10" stroke="#73e3bd" stroke-width="2"/><rect x="25" y="-9" width="7" height="5" rx="2" fill="#eef8cc"/><g fill="#0b1422" stroke="#c3d7d4" stroke-width="3"><circle cx="-18" cy="4" r="7"/><circle cx="20" cy="4" r="7"/></g><circle cy="23" r="3" fill="#73e3bd"/><text id="car-caption" y="41" text-anchor="middle" fill="#a8f3d7" font-size="13"></text></g>
+            <g id="bike"><g fill="none" stroke="#ffc278" stroke-width="2.5"><circle cx="-18" cy="2" r="12"/><circle cx="20" cy="2" r="12"/><path d="M-18 2l12-21L5 2h-23L-1-13H15l5 15M15-13l-3-10h8M-10-20h9"/></g><circle cx="2" cy="-40" r="6" fill="#ffdab1"/><path d="M0-32l-9 13L4-9-2 3M0-32l11 10h8" fill="none" stroke="#eab270" stroke-width="5" stroke-linecap="round"/><circle cy="23" r="3" fill="#ffc278"/><text id="bike-caption" y="41" text-anchor="middle" fill="#ffdab1" font-size="13"></text></g>
+            <g id="road-axis"></g>
+          </svg>
+          <div class="metrics"><div><span>汽车速度 <small>m/s</small></span><strong class="mint-text" id="car-speed">0.00</strong></div><div><span>自行车速度 <small>m/s</small></span><strong class="amber-text" id="bike-speed">6.00</strong></div><div><span>两车间距 <small>m</small></span><strong id="distance">0.00</strong></div><div><span>当前领先</span><strong class="leader" id="leader">同位置</strong></div></div>
+        </section>
+        <section class="panel playback" aria-label="播放控制"><div class="playback-row"><button class="play-button" id="play">▶ 开始演示</button><button class="icon-button" id="reset" aria-label="回到起点">↺</button><button class="step-button" id="step">+ 0.1 s</button><label class="speed-control">播放速度<select id="speed" aria-label="播放速度"><option value="0.25">0.25×</option><option value="0.5" selected>0.5×</option><option value="1">1×</option><option value="2">2×</option></select></label></div><div class="timeline"><output id="time-value">0.00 s</output><input id="time" type="range" min="0" max="5" step="any" value="0" aria-label="演示时间"><span id="duration-end">5.00 s</span></div><div class="playback-help"><label><input type="checkbox" id="auto-pause" checked>在同速、追上时自动暂停</label><span>拖动时间观察 · 空格播放 / 暂停</span></div></section>
+        <div class="charts"><section class="panel"><div class="panel-heading"><h2>速度–时间图像</h2><span class="small-label">斜率 = 加速度</span></div><svg id="velocity-chart" viewBox="0 0 460 225" role="img" aria-label="汽车和自行车的速度时间图像"></svg><p class="chart-note" id="area-note"></p></section><section class="panel"><div class="panel-heading"><h2>位置差–时间图像</h2><span class="small-label">Δx = x自行车 − x汽车</span></div><svg id="gap-chart" viewBox="0 0 460 225" role="img" aria-label="自行车位置减去汽车位置随时间变化的图像"></svg><p class="chart-note">曲线先上升再下降；过零后汽车领先。<br>两车间距 = |Δx|。</p></section></div>
+      </div>
+      <aside class="sidebar">
+        <section class="panel parameters"><div class="panel-heading"><h2>实验参数</h2><span class="small-label" id="parameter-mode">原题</span></div><div class="parameter"><div class="parameter-title"><label for="acceleration">汽车加速度 a</label><output id="acceleration-value">3.0 m/s²</output></div><input id="acceleration" type="range" min="1" max="6" step="0.5" value="3"><div class="range-labels"><span>1</span><span>6 m/s²</span></div></div><div class="parameter"><div class="parameter-title"><label for="bicycle-speed">自行车速度 u</label><output id="bicycle-value">6.0 m/s</output></div><input id="bicycle-speed" type="range" min="2" max="12" step="0.5" value="6"><div class="range-labels"><span>2</span><span>12 m/s</span></div></div><p class="parameter-note">汽车初速度为 0，两车初始位置均为 0。修改参数将回到起点，坐标刻度同步调整。</p></section>
+        <section class="panel insight"><div class="eyebrow">此刻发生了什么？</div><h2 id="insight-title">同一位置，不同速度</h2><p id="insight-copy" role="status"></p><div class="live-equations"><div>汽车位置 x₁ = ½at²<output id="car-equation"></output></div><div>自行车位置 x₂ = ut<output id="bike-equation"></output></div><div>位置差 Δx = ut − ½at²<output id="gap-equation"></output></div></div></section>
+        <section class="panel solution"><h2>两个条件，两个时刻</h2><div><span class="amber-text">① 相距最远：速度相等</span><p>at₁ = u → t₁ = u/a</p><strong id="equal-answer"></strong><p>Δx最大 = u²/(2a)</p><strong id="distance-answer"></strong></div><div><span class="mint-text">② 再次相遇：位置相等</span><p>½at₂² = ut₂ → t₂ = 2u/a（t₂ &gt; 0）</p><strong id="catch-answer"></strong><p>汽车速度 v₂ = at₂ = 2u</p><strong id="speed-answer"></strong></div></section>
+      </aside>
+    </div>
+    <section class="takeaways"><article><span>01 / 先拉开</span><h3>汽车加速，不等于立即靠近</h3><p>起初汽车比自行车慢，自行车每秒走得更多，所以间距仍在增大。</p></article><article><span>02 / 再缩小</span><h3>速度相等时，间距最大</h3><p>同速只表示这一瞬间间距不再增大。之后汽车更快，才开始弥补前面落后的距离。</p></article><article><span>03 / 后追上</span><h3>追回的距离等于先前落后</h3><p>速度图中，橙色面积表示落后的距离，绿色面积表示追回的距离。两块面积相等时，两车再次相遇。</p></article></section>
+    <footer><span>PhysicsMP Lab · 让物理过程可视化</span><a href="匀变速直线运动.html">继续探索：匀变速直线运动 →</a></footer>
+    <noscript>此实验需要开启浏览器 JavaScript。</noscript>
+  </main>
+</body>
+</html>

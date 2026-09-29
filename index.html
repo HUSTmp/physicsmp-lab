@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="PhysicsMP Lab：面向中学物理课堂的交互式仿真小实验。">
   <title>PhysicsMP Lab · 物理仿真小实验</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260921-kinematics">
+  <link rel="stylesheet" href="assets/style.css?v=20260929-pursuit">
 </head>
 <body>
   <header class="site-header">
@@ -42,7 +42,7 @@
           </div>
 
           <div class="hero-stats hero-stats-v3">
-            <div><b>05</b><span>已上线实验</span></div>
+            <div><b>06</b><span>已上线实验</span></div>
             <div><b>04</b><span>知识模块</span></div>
             <div><b>100%</b><span>浏览器直接运行</span></div>
           </div>
@@ -169,98 +169,59 @@
             <span class="eyebrow">Featured Experiments</span>
             <h2>精选实验</h2>
           </div>
-          <p>完整内容按“知识模块”展开</p>
+          <p>从典型问题出发，精选 4 个实验。<br>全部实验可在力学模块中浏览。</p>
         </div>
 
         <div class="experiment-grid featured-grid">
+          <article class="experiment-card new-experiment-card">
+            <div class="card-badge">最新上线</div>
+            <div class="experiment-icon" aria-hidden="true">⇉</div>
+            <div class="experiment-content">
+              <span class="category">运动学 · 追及与相遇</span>
+              <h3>汽车什么时候追上自行车？</h3>
+              <p>观察两车先拉开距离、再靠近相遇。用关键时刻暂停与同步图像，分清“速度相等”和“位置相等”。</p>
+              <div class="tags"><span>关键时刻暂停</span><span>同步图像</span><span>参数探索</span></div>
+              <a class="btn primary card-button" href="programs/追及相遇.html">进入实验 →</a>
+            </div>
+          </article>
+
           <article class="experiment-card">
-            <div class="card-badge">新上线 · 三维对比</div>
-            <div class="experiment-icon">✈</div>
+            <div class="card-badge">三维对比</div>
+            <div class="experiment-icon" aria-hidden="true">✈</div>
             <div class="experiment-content">
               <span class="category">运动学 · 参考系与速度叠加</span>
               <h3>舰载机如何达到起飞速度？</h3>
-              <p>对比弹射助推与航母航行，调节两种速度，观察飞机在甲板末端能否达到起飞要求。</p>
+              <p>对比弹射助推与航母航行两种方案，调节速度，观察飞机在甲板末端能否达到起飞要求。</p>
               <div class="tags"><span>三维动画</span><span>双方案对比</span><span>时间拖动</span></div>
-              <a class="btn primary card-button" href="programs/舰载机起飞.html">进入实验 →</a>
-            </div>
-          </article>
-
-          <article class="experiment-card featured new-experiment-card">
-            <div class="card-badge">新上线</div>
-            <div class="experiment-icon">→</div>
-            <div class="experiment-content">
-              <span class="category">力学 · 运动学 · 匀变速</span>
-              <h3>匀变速直线运动：看见速度如何变化</h3>
-              <p>
-                调节初速度、加速度和演示时长，让小车与 v–t、x–t、a–t 图像同步运动。
-                观察减速、转向，比较位移与累计路程。
-              </p>
-              <div class="tags">
-                <span>参数可调</span>
-                <span>v–t 图像</span>
-                <span>课堂全屏</span>
-              </div>
-              <a class="btn primary card-button" href="programs/匀变速直线运动.html">开始实验 →</a>
-            </div>
-          </article>
-
-          <article class="experiment-card featured">
-            <div class="card-badge">已上线</div>
-            <div class="experiment-icon">Σ</div>
-            <div class="experiment-content">
-              <span class="category">力学 · 运动学 · 微元法</span>
-              <h3>匀变速直线运动：位移公式推导</h3>
-              <p>
-                通过把 v–t 图像下的面积划分成多个小矩形，观察分割数 n 增大时，
-                矩形面积和如何不断逼近真实位移。
-              </p>
-              <div class="tags">
-                <span>v–t 图像</span>
-                <span>微元法</span>
-                <span>极限思想</span>
-              </div>
-              <a class="btn primary card-button" href="programs/微元法.html">进入实验 →</a>
+              <a class="btn secondary card-button" href="programs/舰载机起飞.html">进入实验 →</a>
             </div>
           </article>
 
           <article class="experiment-card">
-            <div class="card-badge">已上线</div>
-            <div class="experiment-icon">↓</div>
+            <div class="card-badge">基础探索</div>
+            <div class="experiment-icon" aria-hidden="true">→</div>
             <div class="experiment-content">
-              <span class="category">力学 · 运动学 · 自由落体</span>
-              <h3>频闪下的自由落体：为什么水滴看起来静止？</h3>
-              <p>
-                对比连续光与频闪观察，理解水滴“看似静止”的原因。
-                水滴位置近似不变，但实际每次闪光看到的并不是同一滴水。
-              </p>
-              <div class="tags">
-                <span>自由落体</span>
-                <span>频闪</span>
-                <span>采样</span>
-              </div>
-              <a class="btn primary card-button" href="programs/水滴（频闪）动画.html">进入实验 →</a>
+              <span class="category">运动学 · 匀变速直线运动</span>
+              <h3>看见速度如何变化</h3>
+              <p>改变初速度与加速度，让小车运动和图像同步变化，观察加速、减速与转向。</p>
+              <div class="tags"><span>参数可调</span><span>运动图像</span><span>课堂全屏</span></div>
+              <a class="btn secondary card-button" href="programs/匀变速直线运动.html">进入实验 →</a>
             </div>
           </article>
 
           <article class="experiment-card">
-            <div class="card-badge">已上线</div>
-            <div class="experiment-icon">E</div>
+            <div class="card-badge">能量转化</div>
+            <div class="experiment-icon" aria-hidden="true">E</div>
             <div class="experiment-content">
-              <span class="category">力学 · 机械能 · 能量转化</span>
-              <h3>机械能守恒：两种模型对比</h3>
-              <p>
-                左侧观察 U 形轨道中重力势能与动能的相互转化；
-                右侧观察蹦极中动能与总势能的变化，并进一步区分重力势能与弹性势能。
-              </p>
-              <div class="tags">
-                <span>机械能守恒</span>
-                <span>重力势能</span>
-                <span>弹性势能</span>
-              </div>
-              <a class="btn primary card-button" href="programs/机械能守恒动画.html">进入实验 →</a>
+              <span class="category">力学 · 机械能守恒</span>
+              <h3>两种模型，看懂能量转化</h3>
+              <p>对照 U 形轨道与蹦极模型，观察动能、重力势能和弹性势能如何相互转化。</p>
+              <div class="tags"><span>双模型对比</span><span>能量图像</span><span>守恒规律</span></div>
+              <a class="btn secondary card-button" href="programs/机械能守恒动画.html">进入实验 →</a>
             </div>
           </article>
         </div>
+        <div class="all-experiments"><span>继续探索微元法推导与水滴频闪</span><a class="btn secondary" href="modules/mechanics.html">查看全部 6 个实验 →</a></div>
       </div>
     </section>
 
@@ -279,7 +240,7 @@
             <span class="num">01</span>
             <h3>力学</h3>
             <p>运动学、牛顿运动定律、曲线运动、机械能、动量。</p>
-            <span class="module-meta">5 个实验 · 进入模块 →</span>
+            <span class="module-meta">6 个实验 · 进入模块 →</span>
           </a>
           <div class="category-card coming-module">
             <span class="num">02</span>

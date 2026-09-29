@@ -14,3 +14,11 @@ PhysicsMP Lab 是一个面向学生和教师的物理仿真小实验网站。 �
 新增 `programs/舰载机起飞.html`，已加入首页和力学模块。支持弹射/航行双方案三维对比、参数调节、时间拖动、播放暂停、全屏及航母平移增强。公式采用原生 MathML；Three.js r158 与 OrbitControls 本地加载（MIT 许可位于 `assets/vendor/three-LICENSE.txt`）。增强显示不改变物理计算。
 
 浏览器验证：环境提供 Playwright 与 Microsoft Edge 后，在仓库根目录执行 `node tests/carrier-browser.cjs`。
+
+### 追及相遇实验
+
+新增 `programs/追及相遇.html`，支持汽车与自行车的位置动画、速度与位置差图像、参数调节、时间拖动、关键时刻自动暂停和全屏演示。原题在 2 s 时相距最远 6 m，在 4 s 时于 24 m 处追上，汽车速度 12 m/s。
+
+首页精选保留追及相遇、舰载机起飞、匀变速直线运动与机械能守恒四个实验；全部六个实验仍可通过力学模块访问。
+
+验证：`node --test tests/pursuit.test.cjs`；环境提供 Playwright 与 Microsoft Edge 后执行 `node tests/pursuit-browser.cjs` 和 `node tests/homepage-browser.cjs`。
