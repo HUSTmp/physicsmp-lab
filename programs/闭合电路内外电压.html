@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="调节液面与外电阻，观察闭合电路内、外电压的变化，探究电动势。">
+  <title>闭合电路内外电压 · PhysicsMP Lab</title>
+  <link rel="stylesheet" href="../assets/kinematics.css"><link rel="stylesheet" href="../assets/circuit.css">
+  <script src="../assets/circuit-physics.js" defer></script><script src="../assets/circuit-app.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="../index.html"><span class="brand-mark">P</span><span>PhysicsMP <b>Lab</b></span></a><div class="top-actions"><a class="quiet-button" href="../modules/electromagnetism.html">← 返回实验</a><button id="fullscreen" class="quiet-button">⛶ 全屏演示</button></div></header>
+  <main>
+    <div class="page-heading"><div><div class="eyebrow">电磁学 / 闭合电路欧姆定律</div><h1>内、外电压之间有什么关系？</h1><p>升降液面，移动滑片，看电源电压怎样分配。</p></div><span class="constant-badge"><i></i> 仪器 · 读数 · 图像同步</span></div>
+    <section class="presets" aria-label="探究模式"><span class="preset-label">控制变量</span><button id="mode-R" class="preset active" aria-pressed="true">① 内阻不变 · 改变外阻</button><button id="mode-r" class="preset" aria-pressed="false">② 外阻不变 · 改变内阻</button><button id="reset" class="preset">↺ 恢复初始状态</button></section>
+    <div class="experiment-layout">
+      <div class="workspace">
+        <section class="panel apparatus">
+          <div class="panel-heading"><h2><span class="section-dot"></span>可调内阻电源</h2><span id="state" class="state-badge">电路闭合</span></div>
+          <svg id="apparatus" viewBox="150 15 610 535" role="img" aria-labelledby="apparatus-title apparatus-desc">
+            <title id="apparatus-title">可调内阻电源与滑动变阻器</title><desc id="apparatus-desc">V₁ 通过内侧探针测内电压，V₂ 接电源两端测外电压。亮点沿主回路表示传统电流方向。</desc>
+            <defs><linearGradient id="liquid-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#73e3bd" stop-opacity=".3"/><stop offset="1" stop-color="#369fa8" stop-opacity=".13"/></linearGradient><marker id="wiper-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#73e3bd"/></marker></defs>
+            <g fill="none" stroke="#839db0" stroke-width="3" stroke-linejoin="round"><path d="M220 361V90H240"/><path id="switch-blade" d="M240 90L280 90"/><path id="wiper-wire" marker-end="url(#wiper-arrow)"/><path d="M540 150H620V361"/></g>
+            <g fill="#0a111d" stroke="#a5bccb" stroke-width="2"><circle cx="240" cy="90" r="4"/><circle cx="280" cy="90" r="4"/><rect x="300" y="138" width="240" height="24" rx="2"/></g>
+            <rect id="active-resistor" x="420" y="139" width="120" height="22" fill="#73e3bd" opacity=".32"/><text x="420" y="45" text-anchor="middle" class="svg-heading">滑动变阻器 R</text><text id="R-label" x="673" y="157" class="svg-mint"></text><text id="P-label" y="118" class="svg-mint">P</text><text x="263" y="68" class="svg-muted">S</text>
+            <g fill="none" stroke="#73e3bd" stroke-width="2"><path d="M220 220H380M460 220H620"/></g><circle cx="420" cy="220" r="40" fill="#112d2a" stroke="#73e3bd" stroke-width="2"/><text x="420" y="213" text-anchor="middle" class="meter-name">V₂</text><text id="meter-outer" x="420" y="238" text-anchor="middle" class="svg-mint"></text><text x="480" y="208" class="svg-mint">外电压 U外</text>
+            <path d="M180 351V498Q180 510 192 510H648Q660 510 660 498V351" fill="#10202e" stroke="#698296" stroke-width="3"/>
+            <rect id="liquid" x="183" y="401" width="474" height="106" fill="url(#liquid-fill)"/><path id="liquid-surface" d="M184 401H656" stroke="#73e3bd" stroke-width="2"/>
+            <g fill="#98acba" stroke="#cad8df"><rect x="209" y="345" width="22" height="146" rx="3"/><rect x="609" y="345" width="22" height="146" rx="3"/></g>
+            <text x="198" y="328" class="svg-heading">A +</text><text x="601" y="328" class="svg-heading">B −</text>
+            <g fill="none" stroke="#ffc278" stroke-width="2"><path d="M275 485V305H382M458 305H565V485"/></g><g fill="#ffc278"><circle cx="275" cy="485" r="4"/><circle cx="565" cy="485" r="4"/></g><circle cx="420" cy="305" r="38" fill="#2c261f" stroke="#ffc278" stroke-width="2"/><text x="420" y="298" text-anchor="middle" class="meter-name">V₁</text><text id="meter-inner" x="420" y="322" text-anchor="middle" class="svg-amber"></text><text x="480" y="292" class="svg-amber">内电压 U内</text><text x="286" y="457" class="svg-amber">a</text><text x="545" y="457" class="svg-amber">b</text>
+            <text x="420" y="386" text-anchor="middle" class="svg-muted">电解液 · 液面越低，内阻越大</text><rect x="322" y="416" width="196" height="31" rx="6" fill="#111d2b" opacity=".92"/><text id="r-label" x="420" y="439" text-anchor="middle" class="svg-heading"></text>
+            <path id="current-path" fill="none" stroke="none"/><g id="charges" fill="#d8ffec"></g>
+            <text x="420" y="538" text-anchor="middle" class="svg-muted">亮点表示传统电流方向，疏密与速度仅作示意</text>
+          </svg>
+          <div class="metrics"><div><span>电流 I <small>A</small></span><strong id="current">0.50</strong></div><div><span>外电压 U外 <small>V</small></span><strong id="outer" class="mint-text">4.00</strong></div><div><span>内电压 U内 <small>V</small></span><strong id="inner" class="amber-text">2.00</strong></div><div><span>电动势 E <small>V</small></span><strong id="emf">6.00</strong></div></div>
+        </section>
+        <section class="panel distribution"><div class="panel-heading"><h2>电压分配</h2><strong id="sum">4.00 + 2.00 = 6.00 V</strong></div><div class="voltage-bar"><div id="outer-bar"></div><div id="inner-bar"></div></div><div class="bar-labels"><span class="mint-text">■ 外电压 U外 = IR</span><span class="amber-text">■ 内电压 U内 = Ir</span></div></section>
+        <section class="panel graph"><div class="panel-heading"><h2 id="chart-title">内阻固定，改变外阻</h2><span class="small-label">绿：U外 · 橙：U内 · 虚线：E</span></div><svg id="chart" viewBox="0 0 760 250" role="img" aria-label="内外电压随电阻变化的图像"></svg><p class="chart-note">实心点表示当前状态；两条曲线对应同一横坐标的电压之和恒为 E。</p></section>
+      </div>
+      <aside class="sidebar">
+        <section class="panel parameters"><div class="panel-heading"><h2>实验参数</h2><span class="small-label">理想化电源模型</span></div>
+          <div class="parameter"><div class="parameter-title"><label for="external">外电阻 R</label><output id="external-value"></output></div><input id="external" type="range" min="1" max="20" step="0.1" value="8"><div class="range-labels"><span>1 Ω</span><span>20 Ω</span></div></div>
+          <div class="parameter"><div class="parameter-title"><label for="level">电解液相对液面</label><output id="level-value"></output></div><input id="level" type="range" min="20" max="100" step="0.1" value="50"><div class="range-labels"><span>低 · 内阻 10 Ω</span><span>高 · 内阻 2 Ω</span></div></div>
+          <div class="parameter"><div class="parameter-title"><label for="source">电动势 E</label><output id="source-value"></output></div><input id="source" type="range" min="2" max="12" step="0.5" value="6"><div class="range-labels"><span>2 V</span><span>12 V</span></div></div><p class="parameter-note" id="control-note"></p>
+        </section>
+        <section class="panel controls"><h2>课堂演示</h2><button id="play" class="play-button" aria-pressed="false">▶ 自动增大外阻</button><div class="control-row"><button id="switch" class="quiet-button" aria-pressed="true">断开电路</button><button id="flow" class="quiet-button" aria-pressed="true">暂停电流动画</button></div><p id="demo-status" role="status">拖动滑块，或自动演示一次完整变化。</p></section>
+        <section class="panel insight"><div class="eyebrow">观察与解释</div><h2 id="insight-title">外阻增大，外电压就增大</h2><p id="insight-copy"></p><div class="equations"><div><b>I = E / (R + r)</b><output id="equation-I"></output></div><div><b>E = U外 + U内</b><output id="equation-E"></output></div></div></section>
+      </aside>
+    </div>
+    <section class="panel records"><div class="records-heading"><div><h2>实验记录</h2><p>每次只改变一个条件，比较内、外电压。</p></div><div class="record-actions"><button id="record" class="preset">＋ 记录当前数据</button><button id="export" class="preset" disabled>导出 CSV</button><button id="clear" class="preset" disabled>清空记录</button></div></div><div class="table-scroll"><table><thead><tr><th>序号</th><th>状态</th><th>E / V</th><th>R / Ω</th><th>r / Ω</th><th>I / A</th><th>U外 / V</th><th>U内 / V</th><th>电压和 / V</th></tr></thead><tbody id="records-body"><tr><td colspan="9" class="empty">还没有记录，调整参数后点击“记录当前数据”。</td></tr></tbody></table></div><p id="record-status" role="status"></p></section>
+    <details class="model"><summary>教材装置与模型说明</summary><p>参照教材中的可调高内阻电池：A、B 为电源两极，内侧探针 a、b 与 V₁ 相连，V₂ 接在电源两端。本动画将探针间电压理想化为整个内阻上的电压降 Ir，忽略电压表分流、导线电阻及电化学极化。</p><p>保持电极间距和电解液电阻率不变，以浸入面积随液面高度增大来模拟内阻减小：r = 200 / h Ω（h 为相对液面百分数）。液面是教学示意，未模拟真实电池的化学过程；单次探究中 E 固定。断路时 I = 0，U内 = 0，U外 = E。</p></details>
+    <section class="takeaways"><article><span>01 / 固定内阻</span><h3>外阻增大：外升、内降</h3><p>R 增大，电流减小，内电压 Ir 减小；外电压 E − Ir 增大。</p></article><article><span>02 / 固定外阻</span><h3>内阻增大：内升、外降</h3><p>降低液面使 r 增大，电流减小，外电压 IR 减小，内电压增大。</p></article><article><span>03 / 同一电源</span><h3>内、外电压之和不变</h3><p>保持电动势 E 不变，无论如何分配，都有 E = U外 + U内。</p></article></section>
+    <footer><span>PhysicsMP Lab · 让物理过程可视化</span><a href="../modules/electromagnetism.html">返回电磁学模块 →</a></footer><noscript>请开启浏览器 JavaScript 后运行此实验。</noscript>
+  </main>
+</body>
+</html>

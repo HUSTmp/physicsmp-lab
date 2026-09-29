@@ -22,3 +22,9 @@ PhysicsMP Lab 是一个面向学生和教师的物理仿真小实验网站。 �
 首页精选保留追及相遇、舰载机起飞、匀变速直线运动与机械能守恒四个实验；全部六个实验仍可通过力学模块访问。
 
 验证：`node --test tests/pursuit.test.cjs`；环境提供 Playwright 与 Microsoft Edge 后执行 `node tests/pursuit-browser.cjs` 和 `node tests/homepage-browser.cjs`。
+
+## 闭合电路内外电压实验
+
+新增电磁学模块，首页共有 7 个实验。进入“电磁学”可打开“闭合电路内外电压”。支持两组控制变量、液面和滑动变阻器调节、电压表与图像同步、自动演示、断路观察、全屏和 CSV 数据导出，可离线运行。
+
+验证：`node --test tests/circuit.test.cjs`；安装 Playwright 且提供 Edge 后运行 `node tests/circuit-browser.cjs`。
